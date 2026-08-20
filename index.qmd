@@ -1,0 +1,10 @@
+---
+title: "Matthew Buck's Homepage"
+---
+
+My main personal webpage can be found
+[here](https://sites.google.com/view/matthewbuck). I may migrate over here at
+some point. Presently, this website exists to host a blog post on an
+[illustration of my
+research](/phd-illustration) (Google Sites
+can't do inline maths in any sensible way).

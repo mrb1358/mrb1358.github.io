@@ -1,0 +1,48 @@
+---
+title: PhD Illustration
+date: 2026-08-20
+aliases:
+    - phd-illustration
+---
+![An almost toric base diagram for the $\mathbb{Q}$-Gorenstein smoothing of
+the cyclic quotient T-singularity
+$B_{d,p,q}$.](/images/bdpq-at-base-diagram.png)
+
+# An Illustrative Guide To My PhD Thesis
+
+This post is the product of when I was thinking about how to explain my PhD
+research to prospective employers (and maybe even curious friends). Its
+purpose is to give the reader a sense of the main result of my thesis. Little
+attempt at mathematical rigour is made.
+
+## The main result
+
+By the end of this post, we should have developed enough theory to roughly
+understand the following statement:\
+
+> Let $L \subset B_{d,p,q}$ be a Lagrangian sphere. Then $L$ is Lagrangian
+> isotopic, up to twisting, to one of the "standard" spheres.
+
+The plan is to explain this by way of analogy in the two dimensional setting
+that we can actually visualise (the $B_{d,p,q}$s mentioned above are
+4-dimensional spaces with the 2-dimensional Lagrangian sphere $L$ living
+inside it).
+
+First of all:
+
+## What is a Lagrangian?
+
+When we talk of Lagrangians we are thinking of smooth objects (which
+mathematicians call *manifolds*) that live inside some larger ambient space
+(also a manifold) and satisfies some special conditions. Fortunately, in two
+dimensions---that is, when the ambient space is two dimensional, *i.e.* a
+surface---this is all very simple, a Lagrangian is a one-dimensional curve
+living inside an *oriented* two-dimensional surface. "Hold on a minute,"
+you'll say, "what does oriented mean?" Good catch. 
+
+Now, when we say *Lagrangian*, we really mean a Lagrangian *submanifold*,
+which means some manifold (a kind of smooth object) that lives inside a
+*symplectic* manifold
+one (hence the *sub* prefix) and satisfies the Lagrangian condition.
+Fortunately, in dimension two---that is, when the ambient manifold which the
+Lagrangian lives in is two dimensional---this is all very simple
