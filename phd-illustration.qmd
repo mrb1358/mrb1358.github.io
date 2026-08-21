@@ -1,5 +1,5 @@
 ---
-title: PhD Illustration
+title: An Illustrative Guide To My PhD Thesis
 date: 2026-08-20
 aliases:
     - phd-illustration
@@ -8,14 +8,14 @@ aliases:
 the cyclic quotient T-singularity
 $B_{d,p,q}$.](/images/bdpq-at-base-diagram.png)
 
-# An Illustrative Guide To My PhD Thesis
+***Work in progress***
 
 This post is the product of when I was thinking about how to explain my PhD
 research to prospective employers (and maybe even curious friends). Its
 purpose is to give the reader a sense of the main result of my thesis. Little
 attempt at mathematical rigour is made.
 
-## The main result
+# The main result
 
 By the end of this post, we should have developed enough theory to roughly
 understand the following statement:\
@@ -30,7 +30,7 @@ inside it).
 
 First of all:
 
-## What is a Lagrangian?
+# What is a Lagrangian?
 
 When we talk of Lagrangians we are thinking of smooth objects (which
 mathematicians call *manifolds*) that live inside some larger ambient space
@@ -38,11 +38,61 @@ mathematicians call *manifolds*) that live inside some larger ambient space
 dimensions---that is, when the ambient space is two dimensional, *i.e.* a
 surface---this is all very simple, a Lagrangian is a one-dimensional curve
 living inside an *oriented* two-dimensional surface. "Hold on a minute,"
-you'll say, "what does oriented mean?" Good catch. 
+you'll say, "you've snuck in another term in your attempt to define
+Lagrangian!" You got me, that's often the way with these kinds of expository
+articles. Orientability is quite a subtle geometric concept, so we'll build
+up to it from the lowest dimension: zero.
 
-Now, when we say *Lagrangian*, we really mean a Lagrangian *submanifold*,
-which means some manifold (a kind of smooth object) that lives inside a
-*symplectic* manifold
-one (hence the *sub* prefix) and satisfies the Lagrangian condition.
-Fortunately, in dimension two---that is, when the ambient manifold which the
-Lagrangian lives in is two dimensional---this is all very simple
+## Orientation
+
+A zero-dimensional manifold is just
+a discrete collection of points (imagine the whole numbers dotted along the
+real number line---this is an example of a zero-dimensional *submanifold*
+inside a one-dimensional ambient one). An orientation on a zero-dimensional
+manifold is just an assignment of a plus or minus sign at each point: **insert
+fig**
+
+Moving up to one-dimensional manifolds (curves), an orientation here is just a
+*consistent* choice of direction all throughout the manifold, *e.g.*: **insert
+fig** This gives a well-defined notion of left-hand and right-hand sides of
+the curve, or in the case of the circle, an interior and exterior.
+
+Finally, for two-dimensional manifolds (surfaces), an orientation is a
+*consistent* choice of clockwise direction all throughout the manifold:
+**insert fig** An equivalent way of thinking about this is assigning an
+*outward pointing* normal vector to the surface, that is, a collection of
+arrows on the surface that are orthogonal to it an point in (whatever we
+decide to be) the outward direction, *e.g.*: **insert fig** This also yields a
+notion of interior and exterior of the surface.
+
+Now, you might wonder why this orientation business is necessary, and this is
+where I make another embarrassing concession and say, well, it's not entirely
+obvious in this dimension. To fully appreciate this we need to consider
+2-dimensional surfaces living inside 4-dimensional ambient manifolds, but this
+is too much of a digression for now, so we make the ersatz that Lagrangians are
+curves living inside oriented 2-dimensional surfaces.
+
+# Lagrangian isotopies
+
+Now that we know what a Lagrangian is, we can easily draw some examples. Both
+the blue and black curves in the **following figure** are Lagrangians, the
+crucial difference between them being that the blue one *joins up* into a
+loop---in maths we say this is a *closed* curve. In fact, since mathematicians
+like to refer to circles as *one-dimensional spheres*,[^spheredef] the blue
+curve actually gives an example of a *1D Lagrangian sphere inside a 2D ambient
+manifold*---whence our 1D analogy of the Lagrangian spheres mentioned in the
+theorem statement earlier.
+
+[^spheredef]: What we usually think of as *the sphere* (something that looks
+    like a globe) is defined in mathematics as the solution to the quadratic
+    equation $$x^2 + y^2 + z^2 = 1,$$ which represents all the points in 3D
+    space that are a fixed distance of 1 away from the origin. The circle is
+    similarly defined as the solution to the equation $$x^2 + y^2 = 1.$$ The
+    relationship between these equations is clear, hence the terminology of
+    one- and two-dimensional spheres. We can go further and define the
+    $n$-dimensional sphere as the solution to the equation $$x_1^2 + x_2^2 +
+    \ldots + x_{n+1}^2 = 1.$$ Of course, once $n$ is bigger than 2, we can no
+    longer faithfully visualise the resulting object, but the fact they form a
+    family of similar geometric objects should be obvious.
+
+

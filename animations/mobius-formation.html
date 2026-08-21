@@ -1,0 +1,413 @@
+<style>
+  .mob-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    max-height: 640px;
+    min-height: 320px;
+    background: radial-gradient(ellipse at 50% 30%, #232323 0%, #161616 100%);
+    border-radius: 14px;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    touch-action: none;
+    user-select: none;
+  }
+  .mob-canvas-host { position: absolute; inset: 0; cursor: grab; }
+  .mob-canvas-host:active { cursor: grabbing; }
+  .mob-caption {
+    position: absolute; top: 18px; left: 22px;
+    color: #ece7d8; font-size: 13px; letter-spacing: 0.02em;
+    opacity: 0.72; pointer-events: none;
+  }
+  .mob-controls {
+    position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%);
+    display: flex; gap: 10px; align-items: center;
+    background: rgba(20,20,20,0.55); backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 999px; padding: 6px 8px;
+  }
+  .mob-btn {
+    appearance: none; border: none; cursor: pointer;
+    font-family: inherit; font-size: 13px; font-weight: 500;
+    padding: 9px 16px; border-radius: 999px;
+    background: #b23b2e; color: #fdf6ee;
+    transition: opacity 0.15s ease, transform 0.1s ease;
+  }
+  .mob-btn:active { transform: scale(0.96); }
+  .mob-btn.secondary { background: rgba(255,255,255,0.12); color: #ece7d8; }
+  .mob-btn:disabled { opacity: 0.35; cursor: default; pointer-events: none; }
+  .mob-hint {
+    position: absolute; right: 22px; bottom: 22px;
+    color: #ece7d8; font-size: 11.5px; opacity: 0.5; pointer-events: none;
+  }
+</style>
+
+<div class="mob-wrap" id="mobWrap">
+  <div class="mob-canvas-host" id="mobHost"></div>
+  <div class="mob-caption">A4 strip &rarr; Möbius strip</div>
+  <div class="mob-hint">drag to rotate</div>
+  <div class="mob-controls">
+    <button class="mob-btn" id="btnReplay">Replay</button>
+    <button class="mob-btn secondary" id="btnTrace" disabled>Trace the surface</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  // ---------- geometry constants ----------
+  var R_FINAL = 1.5;        // radius of the fully-formed loop
+  var HALF_W = 0.46;        // half-width of the paper strip
+  var U_SEG = 160;          // segments along the length
+  var V_SEG = 10;           // segments across the width
+
+  function clamp01(x) { return Math.max(0, Math.min(1, x)); }
+  function smoothstep(x) { x = clamp01(x); return x * x * (3 - 2 * x); }
+
+  // Core surface formula.
+  // U is the *raw* angle (radians), not wrapped -- callers pass U in [-PI, PI]
+  // for the physical strip, or an extended range for the tracer demo.
+  // t in [0,1]: 0..0.5 bends flat sheet into a plain ring, 0.5..1 introduces the half twist.
+  function surfaceAtU(U, v, t) {
+    var b, k;
+    if (t <= 0.5) { b = smoothstep(t / 0.5); k = 0; }
+    else { b = 1; k = smoothstep((t - 0.5) / 0.5); }
+
+    var bb = Math.max(b, 1e-4);
+    var phi = U * bb;
+    var cx = R_FINAL * Math.sin(phi) / bb;
+    var cy = R_FINAL * (1 - Math.cos(phi)) / bb;
+
+    var wx = 0, wy = 0, wz = 1;
+    if (k > 0) {
+      var theta = (U / 2) * k;
+      var s = Math.sin(theta), c = Math.cos(theta);
+      wx = Math.sin(U) * s;
+      wy = -Math.cos(U) * s;
+      wz = c;
+    }
+    return { x: cx + v * wx, y: cy + v * wy, z: v * wz };
+  }
+
+  function uFractionToU(uf) { return (uf - 0.5) * 2 * Math.PI; }
+
+  // ---------- three.js setup ----------
+  var host = document.getElementById("mobHost");
+  var scene = new THREE.Scene();
+
+  // The flat sheet (width ~2*PI*R_FINAL) is much wider than the finished ring
+  // (diameter 2*R_FINAL), so the camera is framed generously to fit the flat
+  // state, with a fixed 4:3 aspect (see CSS) so this holds on narrow screens too.
+  var camera = new THREE.PerspectiveCamera(50, 4 / 3, 0.1, 100);
+  camera.position.set(1.2, 2.2, 9.6);
+  camera.lookAt(0, 1.1, 0);
+
+  var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  host.appendChild(renderer.domElement);
+
+  var hemi = new THREE.HemisphereLight(0xffffff, 0x3a3a3a, 0.65);
+  scene.add(hemi);
+  var key = new THREE.DirectionalLight(0xffffff, 0.95);
+  key.position.set(3.5, 5, 4.5);
+  scene.add(key);
+  var fill = new THREE.DirectionalLight(0xffffff, 0.38);
+  fill.position.set(-4, 2, -3.5);
+  scene.add(fill);
+  var rim = new THREE.DirectionalLight(0x8fb4ff, 0.25);
+  rim.position.set(-2, -3, -2);
+  scene.add(rim);
+
+  var group = new THREE.Group();
+  scene.add(group);
+
+  // ---------- paper texture (subtle grain) ----------
+  function makePaperTexture() {
+    var c = document.createElement("canvas");
+    c.width = 256; c.height = 256;
+    var ctx = c.getContext("2d");
+    ctx.fillStyle = "#fbf7ee";
+    ctx.fillRect(0, 0, 256, 256);
+    for (var i = 0; i < 2200; i++) {
+      var x = Math.random() * 256, y = Math.random() * 256;
+      var a = Math.random() * 0.05;
+      ctx.fillStyle = "rgba(120,110,90," + a + ")";
+      ctx.fillRect(x, y, 1, 1);
+    }
+    var tex = new THREE.CanvasTexture(c);
+    tex.wrapS = THREE.RepeatWrapping;
+    tex.wrapT = THREE.RepeatWrapping;
+    tex.repeat.set(5, 1);
+    return tex;
+  }
+
+  // ---------- main strip mesh ----------
+  var vertCount = (U_SEG + 1) * (V_SEG + 1);
+  var positions = new Float32Array(vertCount * 3);
+  var uvs = new Float32Array(vertCount * 2);
+  var indices = [];
+
+  for (var iu = 0; iu <= U_SEG; iu++) {
+    var uf = iu / U_SEG;
+    for (var iv = 0; iv <= V_SEG; iv++) {
+      var vf = iv / V_SEG;
+      var idx = iu * (V_SEG + 1) + iv;
+      uvs[idx * 2] = uf * 5.0;
+      uvs[idx * 2 + 1] = vf;
+    }
+  }
+  for (iu = 0; iu < U_SEG; iu++) {
+    for (iv = 0; iv < V_SEG; iv++) {
+      var a = iu * (V_SEG + 1) + iv;
+      var bI = (iu + 1) * (V_SEG + 1) + iv;
+      var cI = (iu + 1) * (V_SEG + 1) + iv + 1;
+      var d = iu * (V_SEG + 1) + iv + 1;
+      indices.push(a, bI, d, bI, cI, d);
+    }
+  }
+
+  var stripGeo = new THREE.BufferGeometry();
+  stripGeo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+  stripGeo.setAttribute("uv", new THREE.BufferAttribute(uvs, 2));
+  stripGeo.setIndex(indices);
+
+  var stripMat = new THREE.MeshStandardMaterial({
+    map: makePaperTexture(),
+    color: 0xffffff,
+    side: THREE.DoubleSide,
+    roughness: 0.87,
+    metalness: 0.03
+  });
+  var stripMesh = new THREE.Mesh(stripGeo, stripMat);
+  group.add(stripMesh);
+
+  function updateStrip(t) {
+    var pos = stripGeo.attributes.position.array;
+    for (var iu2 = 0; iu2 <= U_SEG; iu2++) {
+      var U = uFractionToU(iu2 / U_SEG);
+      for (var iv2 = 0; iv2 <= V_SEG; iv2++) {
+        var v = (iv2 / V_SEG - 0.5) * 2 * HALF_W;
+        var p = surfaceAtU(U, v, t);
+        var k2 = (iu2 * (V_SEG + 1) + iv2) * 3;
+        pos[k2] = p.x; pos[k2 + 1] = p.y; pos[k2 + 2] = p.z;
+      }
+    }
+    stripGeo.attributes.position.needsUpdate = true;
+    stripGeo.computeVertexNormals();
+  }
+  updateStrip(0);
+
+  // ---------- boundary edge highlight (revealed once formed) ----------
+  var BOUND_MAX = (U_SEG + 1) * 2 + 1;
+  var boundPositions = new Float32Array(BOUND_MAX * 3);
+  var boundGeo = new THREE.BufferGeometry();
+  boundGeo.setAttribute("position", new THREE.BufferAttribute(boundPositions, 3));
+  boundGeo.setDrawRange(0, 0);
+  var boundMat = new THREE.LineBasicMaterial({ color: 0xd8503e, linewidth: 2, transparent: true, opacity: 0.95 });
+  var boundLine = new THREE.Line(boundGeo, boundMat);
+  group.add(boundLine);
+
+  // small outward offset along the local surface normal, to avoid z-fighting
+  // with the mesh it traces (used for both the boundary line and the tracer)
+  function liftedPoint(U, v, t, off) {
+    var dU = 0.01, dV = 0.01;
+    var p = surfaceAtU(U, v, t);
+    var pu1 = surfaceAtU(U + dU, v, t), pu0 = surfaceAtU(U - dU, v, t);
+    var pv1 = surfaceAtU(U, v + dV, t), pv0 = surfaceAtU(U, v - dV, t);
+    var tx = pu1.x - pu0.x, ty = pu1.y - pu0.y, tz = pu1.z - pu0.z;
+    var sx = pv1.x - pv0.x, sy = pv1.y - pv0.y, sz = pv1.z - pv0.z;
+    var nx = ty * sz - tz * sy, ny = tz * sx - tx * sz, nz = tx * sy - ty * sx;
+    var nl = Math.sqrt(nx * nx + ny * ny + nz * nz) || 1;
+    nx /= nl; ny /= nl; nz /= nl;
+    return { x: p.x + nx * off, y: p.y + ny * off, z: p.z + nz * off };
+  }
+
+  function buildBoundaryPoints() {
+    var arr = [];
+    for (var i = 0; i <= U_SEG; i++) {
+      var U = uFractionToU(i / U_SEG);
+      arr.push(liftedPoint(U, HALF_W, 1, 0.012));
+    }
+    for (var j = 0; j <= U_SEG; j++) {
+      var U2 = uFractionToU(j / U_SEG);
+      arr.push(liftedPoint(U2, -HALF_W, 1, 0.012));
+    }
+    for (var n = 0; n < arr.length; n++) {
+      boundPositions[n * 3] = arr[n].x;
+      boundPositions[n * 3 + 1] = arr[n].y;
+      boundPositions[n * 3 + 2] = arr[n].z;
+    }
+    boundGeo.attributes.position.needsUpdate = true;
+  }
+
+  // ---------- tracer (demonstrates the strip is one-sided) ----------
+  var N_TRACE = 320;
+  var tracePositions = new Float32Array(N_TRACE * 3);
+  var traceGeo = new THREE.BufferGeometry();
+  traceGeo.setAttribute("position", new THREE.BufferAttribute(tracePositions, 3));
+  traceGeo.setDrawRange(0, 0);
+  var traceMat = new THREE.LineBasicMaterial({ color: 0x4fc3f7, linewidth: 2 });
+  var traceLine = new THREE.Line(traceGeo, traceMat);
+  group.add(traceLine);
+
+  var traceMarker = new THREE.Mesh(
+    new THREE.SphereGeometry(0.045, 16, 16),
+    new THREE.MeshStandardMaterial({ color: 0x4fc3f7, emissive: 0x0e3a4a, roughness: 0.4 })
+  );
+  traceMarker.visible = false;
+  group.add(traceMarker);
+
+  var TRACE_V = HALF_W * 0.32;
+  var traceRaw = []; // {x,y,z} offset slightly above the surface along its local normal
+
+  function buildTracePoints() {
+    traceRaw = [];
+    for (var i = 0; i < N_TRACE; i++) {
+      var frac = i / (N_TRACE - 1);
+      var U = -Math.PI + frac * (4 * Math.PI); // two full trips: -PI .. 3PI
+      traceRaw.push(liftedPoint(U, TRACE_V, 1, 0.02));
+    }
+  }
+
+  function updateTraceReveal(frac) {
+    var count = Math.max(2, Math.floor(frac * N_TRACE));
+    for (var i = 0; i < count; i++) {
+      tracePositions[i * 3] = traceRaw[i].x;
+      tracePositions[i * 3 + 1] = traceRaw[i].y;
+      tracePositions[i * 3 + 2] = traceRaw[i].z;
+    }
+    traceGeo.attributes.position.needsUpdate = true;
+    traceGeo.setDrawRange(0, count);
+    var tip = traceRaw[count - 1];
+    traceMarker.position.set(tip.x, tip.y, tip.z);
+  }
+
+  // ---------- interaction: drag to rotate, gentle auto-rotate when idle ----------
+  var dragging = false, lastX = 0, lastY = 0;
+  var rotY = 0.5, rotX = -0.12, velY = 0.0015;
+  var idleTimer = 0;
+
+  function pointerDown(e) {
+    dragging = true; idleTimer = 0;
+    var p = (e.touches ? e.touches[0] : e);
+    lastX = p.clientX; lastY = p.clientY;
+  }
+  function pointerMove(e) {
+    if (!dragging) return;
+    var p = (e.touches ? e.touches[0] : e);
+    var dx = p.clientX - lastX, dy = p.clientY - lastY;
+    lastX = p.clientX; lastY = p.clientY;
+    rotY += dx * 0.006;
+    rotX = Math.max(-0.9, Math.min(0.9, rotX + dy * 0.006));
+    e.preventDefault && e.preventDefault();
+  }
+  function pointerUp() { dragging = false; idleTimer = 0; }
+
+  var host2 = document.getElementById("mobHost");
+  host2.addEventListener("mousedown", pointerDown);
+  window.addEventListener("mousemove", pointerMove);
+  window.addEventListener("mouseup", pointerUp);
+  host2.addEventListener("touchstart", pointerDown, { passive: true });
+  host2.addEventListener("touchmove", pointerMove, { passive: false });
+  window.addEventListener("touchend", pointerUp);
+
+  // ---------- UI wiring ----------
+  var btnReplay = document.getElementById("btnReplay");
+  var btnTrace = document.getElementById("btnTrace");
+
+  var state = {
+    t: 0,
+    playing: true,
+    formationDone: false,
+    boundaryReveal: 0,
+    boundaryBuilt: false,
+    tracing: false,
+    traceT: 0
+  };
+
+  function resetAnimation() {
+    state.t = 0;
+    state.playing = true;
+    state.formationDone = false;
+    state.boundaryReveal = 0;
+    state.boundaryBuilt = false;
+    state.tracing = false;
+    state.traceT = 0;
+    boundGeo.setDrawRange(0, 0);
+    traceGeo.setDrawRange(0, 0);
+    traceMarker.visible = false;
+    btnTrace.disabled = true;
+    updateStrip(0);
+  }
+
+  btnReplay.addEventListener("click", resetAnimation);
+  btnTrace.addEventListener("click", function () {
+    if (!state.formationDone) return;
+    state.tracing = true;
+    state.traceT = 0;
+    traceMarker.visible = true;
+    if (traceRaw.length === 0) buildTracePoints();
+  });
+
+  // ---------- resize handling ----------
+  function resize() {
+    var w = host.clientWidth || 800, h = host.clientHeight || 600;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+  }
+  if (window.ResizeObserver) {
+    new ResizeObserver(resize).observe(document.getElementById("mobWrap"));
+  } else {
+    window.addEventListener("resize", resize);
+  }
+  resize();
+
+  // ---------- main loop ----------
+  var FORM_DURATION = 4.6; // seconds
+  var BOUND_DURATION = 1.3;
+  var TRACE_DURATION = 7.5;
+  var last = performance.now();
+
+  function animate(now) {
+    requestAnimationFrame(animate);
+    var dt = Math.min((now - last) / 1000, 0.05);
+    last = now;
+
+    if (state.playing && state.t < 1) {
+      state.t = Math.min(1, state.t + dt / FORM_DURATION);
+      updateStrip(state.t);
+      if (state.t >= 1) {
+        state.playing = false;
+        state.formationDone = true;
+        buildBoundaryPoints();
+      }
+    }
+
+    if (state.formationDone && state.boundaryReveal < 1) {
+      state.boundaryReveal = Math.min(1, state.boundaryReveal + dt / BOUND_DURATION);
+      var revealCount = Math.max(0, Math.floor(state.boundaryReveal * (U_SEG + 1) * 2));
+      boundGeo.setDrawRange(0, revealCount);
+      if (state.boundaryReveal >= 1) btnTrace.disabled = false;
+    }
+
+    if (state.tracing) {
+      state.traceT = Math.min(1, state.traceT + dt / TRACE_DURATION);
+      updateTraceReveal(state.traceT);
+      if (state.traceT >= 1) state.tracing = false;
+    }
+
+    if (!dragging) {
+      idleTimer += dt;
+      rotY += velY;
+    }
+    group.rotation.y = rotY;
+    group.rotation.x = rotX;
+
+    renderer.render(scene, camera);
+  }
+  requestAnimationFrame(animate);
+})();
+</script>
