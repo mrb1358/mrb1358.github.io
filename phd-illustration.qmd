@@ -35,22 +35,21 @@ First of all:
 When we talk of Lagrangians we are thinking of smooth objects (which
 mathematicians call *manifolds*) that live inside some larger ambient space
 (also a manifold) and satisfies some special conditions. Fortunately, in two
-dimensions---that is, when the ambient space is two dimensional, *i.e.* a
-surface---this is all very simple, a Lagrangian is a one-dimensional curve
-living inside an *oriented* two-dimensional surface. "Hold on a minute,"
-you'll say, "you've snuck in another term in your attempt to define
-Lagrangian!" You got me, that's often the way with these kinds of expository
-articles. Orientability is quite a subtle geometric concept, so we'll build
-up to it from the lowest dimension: zero.
+dimensions---that is, when the ambient space is two dimensional---this is all
+very simple, a Lagrangian is a one-dimensional curve living inside an
+*oriented* two-dimensional surface. "Hold on a minute," you'll say, "you've
+snuck in another term in your attempt to define Lagrangian!" You got me,
+that's often the way with these kinds of expository articles. Orientability is
+quite a subtle concept, so we'll build up to it from the lowest dimension:
+zero.
 
 ## Orientation
 
-A zero-dimensional manifold is just
-a discrete collection of points (imagine the whole numbers dotted along the
-real number line---this is an example of a zero-dimensional *submanifold*
-inside a one-dimensional ambient one). An orientation on a zero-dimensional
-manifold is just an assignment of a plus or minus sign at each point: **insert
-fig**
+A zero-dimensional manifold is just a discrete collection of points (imagine
+the whole numbers dotted along the real number line, although this is an
+example of a zero-dimensional *submanifold* inside a one-dimensional ambient
+one). An orientation on a zero-dimensional manifold is just an assignment of a
+plus or minus sign at each point: **insert fig**
 
 Moving up to one-dimensional manifolds (curves), an orientation here is just a
 *consistent* choice of direction all throughout the manifold, *e.g.*: **insert
@@ -61,16 +60,28 @@ Finally, for two-dimensional manifolds (surfaces), an orientation is a
 *consistent* choice of clockwise direction all throughout the manifold:
 **insert fig** An equivalent way of thinking about this is assigning an
 *outward pointing* normal vector to the surface, that is, a collection of
-arrows on the surface that are orthogonal to it an point in (whatever we
+arrows on the surface that are orthogonal to it and point in (whatever we
 decide to be) the outward direction, *e.g.*: **insert fig** This also yields a
 notion of interior and exterior of the surface.
 
-Now, you might wonder why this orientation business is necessary, and this is
+You might wonder why this orientation business is necessary, and this is
 where I make another embarrassing concession and say, well, it's not entirely
 obvious in this dimension. To fully appreciate this we need to consider
 2-dimensional surfaces living inside 4-dimensional ambient manifolds, but this
 is too much of a digression for now, so we make the ersatz that Lagrangians are
 curves living inside oriented 2-dimensional surfaces.
+
+### Non-orientable surfaces
+
+To see what non-orientability "looks like" check out this animation (courtesy
+of Claude) of the M&ouml;bius strip. Press the "Trace the surface" button to
+see how the strip *only has one side*. Non-orientable surfaces are essentially
+built up by gluing M&ouml;bius strips together.
+```{=html}
+<p align="center">
+<iframe src="/animations/mobius-formation.html" width="500" height="400">
+</iframe></p>
+```
 
 # Lagrangian isotopies
 
@@ -78,10 +89,11 @@ Now that we know what a Lagrangian is, we can easily draw some examples. Both
 the blue and black curves in the **following figure** are Lagrangians, the
 crucial difference between them being that the blue one *joins up* into a
 loop---in maths we say this is a *closed* curve. In fact, since mathematicians
-like to refer to circles as *one-dimensional spheres*,[^spheredef] the blue
-curve actually gives an example of a *1D Lagrangian sphere inside a 2D ambient
-manifold*---whence our 1D analogy of the Lagrangian spheres mentioned in the
-theorem statement earlier.
+like to refer to circles as *one-dimensional spheres*,[^spheredef] one can
+make the following (slightly overcomplicated but is designed to elucidate a
+point) statement: the blue curve is an example of a *1D Lagrangian
+sphere inside a 2D ambient manifold*. This is a 1D analogy of the Lagrangian
+spheres mentioned in the theorem statement earlier.
 
 [^spheredef]: What we usually think of as *the sphere* (something that looks
     like a globe) is defined in mathematics as the solution to the quadratic
@@ -95,4 +107,40 @@ theorem statement earlier.
     longer faithfully visualise the resulting object, but the fact they form a
     family of similar geometric objects should be obvious.
 
+This is a good point to clarify what the word *standard* in the statement of
+the theorem means; we use standard to refer to a particular object that is
+special, or canonical in some way. In the example of Lagrangian circles on
+the 2-sphere we might declare that the equator is standard, or that lines of
+longitude and latitude are instead. The important things is that "standard" is
+a choice and is used to highlight something we particularly care about.
 
+Now, let's discuss what *Lagrangian isotopic* means. Firstly,
+a Lagrangian *isotopy* is a smooth deformation of Lagrangian submanifolds.
+This is best explained by a picture:
+**insert fig** Given a Lagrangian isotopy $L_t$, we say that
+$L_0$ and $L_1$ are Lagrangian *isotopic* to one another---that is, to be
+Lagrangian isotopic simply means *there exists a* Lagrangian isotopy between
+two Lagrangians.
+
+Let's think about Lagrangian isotopies of circles on the 2-sphere.^[It's
+important here to note that any isotopy must occur solely on the 2D sphere
+itself. Due to our usual visualisation of the sphere inside 3D space it's
+tempting to imagine things passing through the 3D interior of the sphere, but
+this is explicitly forbidden when considering isotopies *on/in* the sphere. If
+one imagines the 2-sphere as the Earth, our isotopy takes place somewhere on
+the Earth's crust and cannot pass through into the mantle or any deeper
+layers.] With a little effort, it's easy to imagine how any two circles here
+can be deformed into one another.^[One can also see this by realising that any
+circle on the sphere can be contracted to a single point. However, this
+violates
+a subtlety that I have said nothing about and will not: all of our Lagrangians
+should be *embedded* and a circle that is mapped to a point is not an
+embedding.] Therefore, the *isotopy classification* of Lagrangian 1-spheres in
+the 2-sphere is very simple: *up to isotopy* there is only one, say the
+equator---the so-called standard Lagrangian sphere in the 2-sphere. Said in
+the same manner as the theorem:
+
+> Any Lagrangian sphere in the 2-sphere is Lagrangian isotopic to the standard
+> Lagrangian sphere, the equator.
+
+No twisting necessary!
