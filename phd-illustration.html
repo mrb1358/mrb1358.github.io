@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2026-08-20">
 
-<title>PhD Illustration – Matthew Buck’s Homepage</title>
+<title>An Illustrative Guide To My PhD Thesis – Matthew Buck’s Homepage</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -148,10 +149,21 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#an-illustrative-guide-to-my-phd-thesis" id="toc-an-illustrative-guide-to-my-phd-thesis" class="nav-link active" data-scroll-target="#an-illustrative-guide-to-my-phd-thesis">An Illustrative Guide To My PhD Thesis</a>
+  <li><a href="#the-main-result" id="toc-the-main-result" class="nav-link active" data-scroll-target="#the-main-result">The main result</a></li>
+  <li><a href="#what-is-a-lagrangian" id="toc-what-is-a-lagrangian" class="nav-link" data-scroll-target="#what-is-a-lagrangian">What is a Lagrangian?</a>
   <ul class="collapse">
-  <li><a href="#the-main-result" id="toc-the-main-result" class="nav-link" data-scroll-target="#the-main-result">The main result</a></li>
+  <li><a href="#orientation" id="toc-orientation" class="nav-link" data-scroll-target="#orientation">Orientation</a>
+  <ul class="collapse">
+  <li><a href="#non-orientable-surfaces" id="toc-non-orientable-surfaces" class="nav-link" data-scroll-target="#non-orientable-surfaces">Non-orientable surfaces</a></li>
   </ul></li>
+  </ul></li>
+  <li><a href="#lagrangian-isotopies" id="toc-lagrangian-isotopies" class="nav-link" data-scroll-target="#lagrangian-isotopies">Lagrangian isotopies</a></li>
+  <li><a href="#a-cylinder-from-a-sheet-of-paper" id="toc-a-cylinder-from-a-sheet-of-paper" class="nav-link" data-scroll-target="#a-cylinder-from-a-sheet-of-paper">A cylinder, from a sheet of paper</a></li>
+  <li><a href="#plumbing-gluing-two-cylinders-together" id="toc-plumbing-gluing-two-cylinders-together" class="nav-link" data-scroll-target="#plumbing-gluing-two-cylinders-together">Plumbing: gluing two cylinders together</a></li>
+  <li><a href="#twisting" id="toc-twisting" class="nav-link" data-scroll-target="#twisting">Twisting</a></li>
+  <li><a href="#stepping-back-up-a-dimension" id="toc-stepping-back-up-a-dimension" class="nav-link" data-scroll-target="#stepping-back-up-a-dimension">Stepping back up a dimension</a></li>
+  <li><a href="#meet-b_dpq" id="toc-meet-b_dpq" class="nav-link" data-scroll-target="#meet-b_dpq">Meet <span class="math inline">\(B_{d,p,q}\)</span></a></li>
+  <li><a href="#coda" id="toc-coda" class="nav-link" data-scroll-target="#coda">Coda</a></li>
   </ul>
 </nav>
     </div>
@@ -160,7 +172,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">PhD Illustration</h1>
+<h1 class="title">An Illustrative Guide To My PhD Thesis</h1>
 </div>
 
 
@@ -168,6 +180,12 @@ window.Quarto = {
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 20, 2026</p>
+    </div>
+  </div>
   
     
   </div>
@@ -183,22 +201,256 @@ window.Quarto = {
 <figcaption>An almost toric base diagram for the <span class="math inline">\(\mathbb{Q}\)</span>-Gorenstein smoothing of the cyclic quotient T-singularity <span class="math inline">\(B_{d,p,q}\)</span>.</figcaption>
 </figure>
 </div>
-<section id="an-illustrative-guide-to-my-phd-thesis" class="level1">
-<h1>An Illustrative Guide To My PhD Thesis</h1>
-<p>This post was created when I was thinking about how to explain my PhD research to prospective employers (and maybe even curious friends). Its purpose is to give the reader a sense of the main result of my thesis. No attempt at mathematical rigour was made.</p>
-<section id="the-main-result" class="level2">
-<h2 class="anchored" data-anchor-id="the-main-result">The main result</h2>
+<p><strong><em>Work in progress</em></strong></p>
+<p>This post is the product of when I was thinking about how to explain my PhD research to prospective employers (and maybe even curious friends). Its purpose is to give the reader a sense of the main result of my thesis. Little attempt at mathematical rigour is made.</p>
+<p><strong><em>AI disclosure:</em></strong> Large parts of this post were drafted by feeding rough handwritten notes into generative AI and lightly editing the output.</p>
+<section id="the-main-result" class="level1">
+<h1>The main result</h1>
 <p>By the end of this post, we should have developed enough theory to roughly understand the following statement:<br>
 </p>
 <blockquote class="blockquote">
-<p>Let <span class="math inline">\(L \subset B_{d,p,q}\)</span> be a Lagrangian sphere. Then <span class="math inline">\(L\)</span> is Lagrangian isotopic,up to twisting, to one of the “standard” spheres.</p>
+<p>Let <span class="math inline">\(L \subset B_{d,p,q}\)</span> be a Lagrangian sphere. Then <span class="math inline">\(L\)</span> is Lagrangian isotopic, up to twisting, to one of the “standard” spheres.</p>
 </blockquote>
+<p>The plan is to explain this by way of analogy in the two dimensional setting that we can actually visualise (the <span class="math inline">\(B_{d,p,q}\)</span>s mentioned above are 4-dimensional spaces with the 2-dimensional Lagrangian sphere <span class="math inline">\(L\)</span> living inside it).</p>
+<p>Almost everything below is an exercise in <em>stepping down a dimension</em>: I will build up the whole story—Lagrangians, deformations, plumbing, twisting—in a world flat enough to draw on a page, and then, right at the end, we’ll step back up and I’ll claim that nothing important changes. That claim is a bit of a cheat, but it’s a productive one.</p>
+<p>First of all:</p>
+</section>
+<section id="what-is-a-lagrangian" class="level1">
+<h1>What is a Lagrangian?</h1>
+<p>When we talk of Lagrangians we are thinking of smooth objects (which mathematicians call <em>manifolds</em>) that live inside some larger ambient space (also a manifold) and satisfies some special conditions. Fortunately, in two dimensions—that is, when the ambient space is two dimensional—this is all very simple, a Lagrangian is a one-dimensional curve living inside an <em>oriented</em> two-dimensional surface. “Hold on a minute,” you’ll say, “you’ve snuck in another term in your attempt to define Lagrangian!” You got me, that’s often the way with these kinds of expository articles. Orientability is quite a subtle concept, so we’ll build up to it from the lowest dimension: zero.</p>
+<section id="orientation" class="level2">
+<h2 class="anchored" data-anchor-id="orientation">Orientation</h2>
+<p>A zero-dimensional manifold is just a discrete collection of points (imagine the whole numbers dotted along the real number line, although this is really an example of a zero-dimensional <em>submanifold</em> inside a one-dimensional ambient one). An orientation on a zero-dimensional manifold is just an assignment of a plus or minus sign at each point:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/orientation-0d.png" class="img-fluid figure-img" style="width:90.0%" alt="A scatter of dots, with an arrow labelled 'assign orientation' pointing to the same scatter of dots, now each labelled with a plus or a minus sign."></p>
+<figcaption>Orienting a zero-dimensional manifold amounts to labelling each point with a sign.</figcaption>
+</figure>
+</div>
+<p>Moving up to one-dimensional manifolds (curves), an orientation here is just a <em>consistent</em> choice of direction all throughout the manifold, <em>e.g.</em>:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/orientation-1d.png" class="img-fluid figure-img" style="width:90.0%" alt="A straight line and a closed loop, each redrawn with small arrowheads along them all pointing the same way round."></p>
+<figcaption>Orienting a curve means choosing a direction of travel, and sticking to it.</figcaption>
+</figure>
+</div>
+<p>This gives a well-defined notion of left-hand and right-hand sides of the curve, or in the case of the circle, an interior and exterior.</p>
+<p>Finally, for two-dimensional manifolds (surfaces), an orientation is a <em>consistent</em> choice of rotational direction all throughout the manifold:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/orientation-2d.png" class="img-fluid figure-img" style="width:88.0%" alt="A sphere and a torus, redrawn with small circular arrows scattered over their surfaces, all curling the same way."></p>
+<figcaption>Orienting a surface means choosing a sense of rotation at every point at once. Both the sphere and the doughnut are happy to oblige. Dashed lines/arrows are to be thought of as on the backside of the surface facing away from the reader.</figcaption>
+</figure>
+</div>
+<p>An equivalent way of thinking about this is assigning an <em>outward pointing</em> normal vector to the surface, that is, a collection of arrows on the surface that are orthogonal to it and point in (whatever we decide to be) the outward direction, <em>e.g.</em>:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/sphere-outward-normal.png" class="img-fluid figure-img" style="width:38.0%" alt="A sphere with arrows attached at several points, each pointing directly away from the surface."></p>
+<figcaption>The same information, packaged differently: an arrow sticking out of the surface at every point, all agreeing on which side is “out”.</figcaption>
+</figure>
+</div>
+<p>This also yields a notion of interior and exterior of the surface.</p>
+<p>You might wonder why this orientation business is necessary, and this is where I make an embarrassing concession and say, well, it’s not entirely obvious in this dimension. To fully appreciate this we need to consider 2-dimensional surfaces living inside 4-dimensional ambient manifolds, but this is too much of a digression for now, so we make the ersatz that Lagrangians are curves living inside oriented 2-dimensional surfaces.</p>
+<section id="non-orientable-surfaces" class="level3">
+<h3 class="anchored" data-anchor-id="non-orientable-surfaces">Non-orientable surfaces</h3>
+<p>To see what non-orientability “looks like” check out this animation (courtesy of Claude) of the Möbius strip. Press the “Trace the surface” button to see how the strip <em>only has one side</em>. Non-orientable surfaces are essentially built up by gluing Möbius strips together.</p>
+<p align="center">
+<iframe src="./animations/mobius-formation.html" width="500" height="400">
+</iframe></p>
+</section>
+</section>
+</section>
+<section id="lagrangian-isotopies" class="level1">
+<h1>Lagrangian isotopies</h1>
+<p>Now that we know what a Lagrangian is, we can easily draw some examples. Both the blue and black curves in the following figure are Lagrangians, the crucial difference between them being that the blue one <em>joins up</em> into a loop—in maths we say this is a <em>closed</em> curve.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/lagrangian-example.png" class="img-fluid figure-img" style="width:34.0%" alt="A sphere with two curves drawn on its surface: a blue one forming a closed loop, and a black one with two loose ends."></p>
+<figcaption>Two Lagrangians on the 2-sphere. The blue one closes up into a loop; the black one doesn’t.</figcaption>
+</figure>
+</div>
+<p>In fact, since mathematicians like to refer to circles as <em>one-dimensional spheres</em>,<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> one can make the following (slightly overcomplicated but is designed to elucidate a point) statement: the blue curve is an example of a <em>1D Lagrangian sphere inside a 2D ambient manifold</em>. This is a 1D analogy of the Lagrangian spheres mentioned in the theorem statement earlier.</p>
+<p>This is a good point to clarify what the word <em>standard</em> in the statement of the theorem means; we use standard to refer to a particular object that is special, or canonical in some way. In the example of Lagrangian circles on the 2-sphere we might declare that the equator is standard, or that lines of longitude and latitude are instead. The important things is that “standard” is a choice and is used to highlight something we particularly care about.</p>
+<p>Now, let’s discuss what <em>Lagrangian isotopic</em> means. Firstly, a Lagrangian <em>isotopy</em> is a smooth deformation of Lagrangian submanifolds. This is best explained by a picture:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/isotopy.png" class="img-fluid figure-img" style="width:85.0%" alt="Two families of nested closed curves, each interpolating between an outer curve labelled L-nought and an inner curve labelled L-one, with an arrow labelled t indicating the direction of the deformation."></p>
+<figcaption>Two Lagrangian isotopies. The curve <span class="math inline">\(L_0\)</span> is nudged, continuously, until it becomes <span class="math inline">\(L_1\)</span>; the intermediate curves are drawn in blue.</figcaption>
+</figure>
+</div>
+<p>Given a Lagrangian isotopy <span class="math inline">\(L_t\)</span>, we say that <span class="math inline">\(L_0\)</span> and <span class="math inline">\(L_1\)</span> are Lagrangian <em>isotopic</em> to one another—that is, to be Lagrangian isotopic simply means <em>there exists a</em> Lagrangian isotopy between two Lagrangians.</p>
+<p>The little subscript <span class="math inline">\(t\)</span> is worth dwelling on for a second. Mathematicians like to use letters to label things (remember “solve for <span class="math inline">\(x\)</span>” from school), and the letter <span class="math inline">\(t\)</span> here is one we can think of naively as <em>time</em>: at time <span class="math inline">\(0\)</span> we have the curve <span class="math inline">\(L_0\)</span>, at time <span class="math inline">\(1\)</span> we have <span class="math inline">\(L_1\)</span>, and in between we have a whole continuous family of curves <span class="math inline">\(L_t\)</span> interpolating between them. It may be useful to think of an isotopy as a film playing as <span class="math inline">\(t\)</span> goes from <span class="math inline">\(0\)</span> to <span class="math inline">\(1\)</span>.</p>
+<p>Let’s think about Lagrangian isotopies of circles on the 2-sphere.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> With a little effort, it’s easy to imagine how any two circles here can be deformed into one another.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> Therefore, the <em>isotopy classification</em> of Lagrangian 1-spheres in the 2-sphere is very simple: <em>up to isotopy</em> there is only one, say the equator—the so-called standard Lagrangian sphere in the 2-sphere. Said in the same manner as the theorem:</p>
+<blockquote class="blockquote">
+<p>Any Lagrangian sphere in the 2-sphere is Lagrangian isotopic to the standard Lagrangian sphere, the equator.</p>
+</blockquote>
+<p>No twisting necessary!</p>
+</section>
+<section id="a-cylinder-from-a-sheet-of-paper" class="level1">
+<h1>A cylinder, from a sheet of paper</h1>
+<p>That was a warm-up, and—I’ll be honest—a slightly disappointing one. One class. Nothing to classify. So let’s switch gears and find a more interesting place to live.</p>
+<p>Take a rectangular sheet of paper and roll it along its long edge until the two short edges meet. You get a cylinder:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/cylinder-formation.png" class="img-fluid figure-img" style="width:90.0%" alt="A rectangle with a horizontal blue line, then the same rectangle partially curled, then a finished cylinder with the blue line now a circle around it."></p>
+<figcaption>Rolling a rectangle into a cylinder. The blue line becomes a blue circle running around the tube.</figcaption>
+</figure>
+</div>
+<p>This cylinder is our new 2-dimensional ambient manifold, and the blue circle is a Lagrangian sphere sitting inside it. Notice something important: on the sphere, our blue circle could be shrunk away to nothing, but here it cannot. It wraps the whole way around the tube. There’s no way to slide it off.</p>
+<p>Here is a really useful observation, which we’ll use for the rest of the post: <strong>the flat rectangle is a perfectly faithful picture of the cylinder</strong>, provided we remember the rule that the left edge is glued to the right edge. This is a wonderful bargain, because drawing 2D surfaces sitting in 3D space is hard (for me), whereas drawing rectangles is not. If you’ve ever played an old arcade game where walking off the right of the screen brings you back on the left, you already have the right instinct.</p>
+</section>
+<section id="plumbing-gluing-two-cylinders-together" class="level1">
+<h1>Plumbing: gluing two cylinders together</h1>
+<p>Suppose we have <em>two</em> of these cylinders, which I’ll call <span class="math inline">\(C_0\)</span> and <span class="math inline">\(C_1\)</span>, each drawn as a rectangle, and each carrying its own Lagrangian circle—<span class="math inline">\(L_0\)</span> in <span class="math inline">\(C_0\)</span>, and <span class="math inline">\(L_1\)</span> in <span class="math inline">\(C_1\)</span>. There is an operation called <strong>plumbing</strong> that welds them into a single new manifold.</p>
+<p>The recipe: pick a small square patch in the middle of each rectangle, rotate the second one by a quarter turn, and then glue the two patches together so that the horizontal direction of one is identified with the vertical direction of the other.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/plumbing-gluing.png" class="img-fluid figure-img" style="width:72.0%" alt="Two rectangles side by side, each with a shaded grid patch in the middle, and an arrow labelled 'glue' running from the patch in the first to the patch in the second."></p>
+<figcaption>Plumbing <span class="math inline">\(C_0\)</span> and <span class="math inline">\(C_1\)</span>: a patch of one is glued to a patch of the other, with the two directions swapped over.</figcaption>
+</figure>
+</div>
+<p>What you end up with is a plus-sign-shaped object: two tubes crossing over each other at a single square of overlap.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/plumbing-gluing2.png" class="img-fluid figure-img" style="width:46.0%" alt="A cross or plus-shaped surface made from two crossing bands, with a black curve labelled L-nought running horizontally and a blue curve labelled L-one running vertically, crossing in the shaded middle."></p>
+<figcaption>The plumbing of two cylinders. <span class="math inline">\(L_0\)</span> runs along one arm, <span class="math inline">\(L_1\)</span> along the other, and they meet exactly once.</figcaption>
+</figure>
+</div>
+<p>Here’s what is looks like if we glue the short edges of each piece of paper together:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/Plumbing_disk_bundles.jpeg" class="img-fluid figure-img" style="width:50.0%" alt="Two paper rings glued together in a square patch. The square has a cross section showing how the fibres of each ring is glued to the other."></p>
+<figcaption>A faithful picture of the plumbing of two cylinders. By Café Bene - Own work, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=106106175</figcaption>
+</figure>
+</div>
+<p>Now here’s the point. Both <span class="math inline">\(L_0\)</span> and <span class="math inline">\(L_1\)</span> live in this new manifold, and they cross each other at exactly one point. And—staring at the picture for a moment—we see that there is plainly no way to deform one into the other. <span class="math inline">\(L_0\)</span> goes around one arm; <span class="math inline">\(L_1\)</span> goes around the other; a continuous deformation can’t decide to take the other exit. So we have at least <em>two</em> distinct classes of Lagrangian sphere. The classification here is non-trivial. Progress!</p>
+</section>
+<section id="twisting" class="level1">
+<h1>Twisting</h1>
+<p>We can do better than “at least two”, and this is where the real character of the subject shows up.</p>
+<p>Go back to a single cylinder, drawn flat as a rectangle. Draw the Lagrangian <span class="math inline">\(L_0\)</span> as the blue horizontal circle, and draw a second curve, <span class="math inline">\(a\)</span>, running straight from the top edge to the bottom edge. Now perform the following operation: cut the cylinder along <span class="math inline">\(L_0\)</span>, hold one side fixed, rotate the other side through one full turn, and glue it back together. The curve <span class="math inline">\(a\)</span> gets dragged around with it, and comes out looking like this:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/twist-before-after.png" class="img-fluid figure-img" style="width:68.0%" alt="Two hand-drawn squares side by side, each with a horizontal blue line. In the left one a curve labelled a runs vertically across it; in the right one a curve labelled b runs diagonally, entering at one side and leaving at the other."></p>
+<figcaption>Cutting along <span class="math inline">\(L\)</span> and giving one side a full turn. On the left, the curve <span class="math inline">\(a\)</span> crosses <span class="math inline">\(L\)</span> once and carries straight on; on the right, the same curve after the twist, dragged once around the cylinder and relabelled <span class="math inline">\(b\)</span>.</figcaption>
+</figure>
+</div>
+<p>On the actual, rolled-up cylinder, that looks like the curve taking a detour—a spiral—before continuing on its way:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/twist-cyl.png" class="img-fluid figure-img" style="width:22.0%" alt="A cylinder with a blue circle around it and a curve that runs down the side, wrapping once around the tube where it meets the circle."></p>
+<figcaption>The twist, seen on the cylinder itself.</figcaption>
+</figure>
+</div>
+<p>This operation is called a <strong>twist</strong>,<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> and it is the star of the show. The crucial thing about it is that the twist is a genuine, honest symmetry of the cylinder—it doesn’t tear anything, it doesn’t change the shape—and yet it moves curves to genuinely new curves.</p>
+<p>Returning to the plumbing, we can twist <span class="math inline">\(L_1\)</span> about <span class="math inline">\(L_0\)</span> and the result is a new Lagrangian sphere, one that now runs down one arm, wraps around the crossing, and heads off down the other:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/twist-plumb.png" class="img-fluid figure-img" style="width:80.0%" alt="Two drawings of the cross-shaped plumbed surface side by side. In the first a blue curve enters by one arm and leaves by a perpendicular arm, wrapping once through the middle; in the second it wraps through the middle twice before leaving."></p>
+<figcaption>On the left, <span class="math inline">\(L_1\)</span> twisted once about <span class="math inline">\(L_0\)</span>. On the right, twisted again — and this can be iterated as often as you like.</figcaption>
+</figure>
+</div>
+<p>And we can do it again. And again. Each twist produces a Lagrangian sphere that cannot be deformed into any of the previous ones, so:</p>
+<blockquote class="blockquote">
+<p>There are infinitely many non-isotopic Lagrangian spheres in the plumbing.</p>
+</blockquote>
+<p>This is exactly what the words “up to twisting” are doing in my theorem. The classification isn’t a short list. It’s a short list <em>of starting points</em>, together with a set of moves you’re allowed to apply to them.</p>
+</section>
+<section id="stepping-back-up-a-dimension" class="level1">
+<h1>Stepping back up a dimension</h1>
+<p>Everything so far has been 1D curves inside 2D surfaces. My thesis is about 2D spheres inside 4D manifolds. To make the leap, I need one more idea—a different way of describing that cylinder, one that doesn’t care what dimension it’s in.</p>
+<p>Start with the circle <span class="math inline">\(C\)</span>, all the points at distance <span class="math inline">\(1\)</span> from the origin in the plane:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/circle-in-plane.png" class="img-fluid figure-img" style="width:27.0%" alt="A circle drawn centred on a pair of coordinate axes."></p>
+<figcaption>The circle <span class="math inline">\(x^2 + y^2 = 1\)</span> in the plane.</figcaption>
+</figure>
+</div>
+<p>A <em>tangent line</em> to <span class="math inline">\(C\)</span> at a point is the line through that point which makes a right angle with the radius—the line the point would fly off along if you let go of it:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/circle-tangent-line.png" class="img-fluid figure-img" style="width:32.0%" alt="A circle with a straight line touching it at one point, with a small square marking the right angle between the line and the radius."></p>
+<figcaption>A tangent line: at right angles to the radius.</figcaption>
+</figure>
+</div>
+<p>Now take that tangent line and rotate it out of the plane, so that instead of lying flat it sticks straight up:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/tangent-line-rotated.png" class="img-fluid figure-img" style="width:54.0%" alt="A flat plane containing a circle, with a dashed line showing the original tangent direction and a curved arrow rotating it up into a solid vertical line rising out of the plane where it touches the circle."></p>
+<figcaption>The same tangent line, stood up perpendicular to the plane.</figcaption>
+</figure>
+</div>
+<p>And here is the trick: do this at <em>every</em> point of the circle, all at once. The tangent lines sweep out a cylinder.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/tangent-bundle-circle.png" class="img-fluid figure-img" style="width:52.0%" alt="A flat plane with a cylinder standing vertically through it, ruled by vertical lines and meeting the plane exactly in the blue circle. The part of the cylinder below the plane is dashed."></p>
+<figcaption>All the tangent lines to the circle, taken together, form a cylinder. This is the tangent bundle of the circle.</figcaption>
+</figure>
+</div>
+<p>This object—the collection of all the tangent lines to the circle—is called the <strong>tangent bundle</strong> of the circle.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> It’s the same cylinder we’ve been drawing all along, but now described in a way that makes no reference to rectangles or sheets of paper. And that matters, because this description doesn’t care that we started with a circle.</p>
+<p>So let’s not start with a circle. Let’s start with the 2-sphere. At each point of the sphere there is now a tangent <em>plane</em> rather than a tangent line, and gluing all of them together gives the tangent bundle of the 2-sphere:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/tangent-bundle-sphere.png" class="img-fluid figure-img" style="width:50.0%" alt="A sphere with three flat planes each touching it at a single marked point, with a small arrow drawn in each plane from the point of contact."></p>
+<figcaption>The tangent bundle of the 2-sphere: a tangent plane at every point of the sphere, all glued together.</figcaption>
+</figure>
+</div>
+<p>Count the dimensions: two for moving around on the sphere, plus two more for choosing a tangent vector once you’re there, makes <strong>four</strong>. So the tangent bundle of the 2-sphere is a 4-dimensional symplectic manifold, and sitting inside it, as the collection of all the <em>zero-length</em> tangent vectors, is a copy of the 2-sphere itself: a Lagrangian 2-sphere.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<p>Here is the payoff. Both of our constructions—plumbing and twisting—were described in terms of tangent bundles, patches and cutting, and none of that cared about the dimension. Everything carries over verbatim. Plumb two copies of the tangent bundle of the 2-sphere together and you get two Lagrangian 2-spheres meeting at a point. Cut along one of them, give it a full turn, and glue back: a twist. Iterate: infinitely many Lagrangian spheres.</p>
+</section>
+<section id="meet-b_dpq" class="level1">
+<h1>Meet <span class="math inline">\(B_{d,p,q}\)</span></h1>
+<p>Which finally brings us to the object in the title of my thesis.</p>
+<p><span class="math inline">\(B_{d,p,q}\)</span> is built by plumbing together <span class="math inline">\(d-1\)</span> copies of the tangent bundle of the 2-sphere in a row—a chain—and then plumbing on one further 4-dimensional piece, which is essentially the tangent bundle of a <em>circle with <span class="math inline">\(p\)</span> flanges</em>:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/pinwheel.png" class="img-fluid figure-img" style="width:54.0%" alt="A circle drawn in perspective, with three straight flanges sticking out of it at evenly spaced angles at a dozen points around it. The trio of flanges rotates gradually as it travels round the circle."></p>
+<figcaption>The extra ingredient: a circle carrying three flanges. Watch what happens to the flanges as you travel once around the circle—each one ends up in its neighbour’s place. They are not three separate sheets at all, but one sheet wrapped round three times.</figcaption>
+</figure>
+</div>
+<!---
+TODO: Using Claude, generate an animation of the pinwheel flanges rotating
+-->
+<p>That flanged object has a name—a <strong>pinwheel</strong>—and the recipe for it is charmingly simple: take a circle, take a disc, and glue the boundary of the disc onto the circle, but wrap it around <span class="math inline">\(p\)</span> times on the way.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> The number <span class="math inline">\(q\)</span> is bookkeeping that records how the wrapping twists as it goes. Between them, <span class="math inline">\(d\)</span>, <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> are the three dials on the machine, and each setting gives a different manifold.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
+<p>Inside <span class="math inline">\(B_{d,p,q}\)</span>, that chain of plumbed tangent bundles leaves behind a chain of <span class="math inline">\(d-1\)</span> Lagrangian 2-spheres, each meeting the next at a single point:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/sphere-chain.png" class="img-fluid figure-img" style="width:82.0%" alt="A row of spheres, each one touching the next at a single marked point, with a gap of three dots in the middle indicating that the chain continues."></p>
+<figcaption>The chain of standard Lagrangian spheres inside <span class="math inline">\(B_{d,p,q}\)</span>.</figcaption>
+</figure>
+</div>
+<p>These are the <strong>standard</strong> spheres—exactly the sense of “standard” I flagged up much earlier. They’re the ones we can see, the ones that come for free with the construction. And the question my thesis answers is: <em>are there any others?</em></p>
+<p>The answer is that there are, of course, infinitely many others—we can twist, after all, and we saw where that leads. But the theorem says that twisting is the <em>only</em> thing going on:</p>
+<blockquote class="blockquote">
+<p>Let <span class="math inline">\(L \subset B_{d,p,q}\)</span> be a Lagrangian sphere. Then <span class="math inline">\(L\)</span> is Lagrangian isotopic, up to twisting, to one of the “standard” spheres.</p>
+</blockquote>
+<p>In other words: take any Lagrangian sphere in <span class="math inline">\(B_{d,p,q}\)</span>, however exotic, and you can untwist it—by twisting about the standard spheres, and by twisting about the pinwheel<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>—until it lands on one of the <span class="math inline">\(d-1\)</span> spheres in the chain. Nothing else is hiding in there. Every Lagrangian sphere in <span class="math inline">\(B_{d,p,q}\)</span> is a standard one that’s been knotted up, and knotted up in a way that we can completely describe.</p>
+<p>A closing remark, in case you’re wondering how much the dials matter: when <span class="math inline">\(d = 1\)</span> the chain is empty and there are no Lagrangian spheres in <span class="math inline">\(B_{d,p,q}\)</span> <em>at all</em>. Just the pinwheel, sitting there on its own.</p>
+</section>
+<section id="coda" class="level1">
+<h1>Coda</h1>
+<p>And that picture at the very top of the page? That’s how symplectic geometers actually draw <span class="math inline">\(B_{d,p,q}\)</span> in practice. It’s a kind of shadow of the 4-dimensional manifold cast down onto a flat piece of paper—the same trick as drawing the cylinder as a rectangle, taken a good deal further. The two crosses are where the Lagrangian spheres live, and the dotted line running down to the corner is where the pinwheel lives. The whole of this post is, in a sense, a long-winded caption for it.</p>
+<p>If you’d like the version with all the details—the <span class="math inline">\(J\)</span>-holomorphic curves, the neck stretching, the Lefschetz fibrations, and the 90-odd pages I have skipped over—it’s on the arXiv as <a href="https://arxiv.org/abs/2509.18976"><em>Lagrangian spheres and cyclic quotient T-singularities</em></a>.</p>
 
 
 </section>
-</section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>What we usually think of as <em>the sphere</em> (something that looks like a globe) is defined in mathematics as the solution to the quadratic equation <span class="math display">\[x^2 + y^2 + z^2 = 1,\]</span> which represents all the points in 3D space that are a fixed distance of 1 away from the origin. The circle is similarly defined as the solution to the equation <span class="math display">\[x^2 + y^2 = 1.\]</span> The relationship between these equations is clear, hence the terminology of one- and two-dimensional spheres. We can go further and define the <span class="math inline">\(n\)</span>-dimensional sphere as the solution to the equation <span class="math display">\[x_1^2 + x_2^2 +
+\ldots + x_{n+1}^2 = 1.\]</span> Of course, once <span class="math inline">\(n\)</span> is bigger than 2, we can no longer faithfully visualise the resulting object, but the fact they form a family of similar geometric objects should be obvious.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>It’s important here to note that any isotopy must occur solely on the 2D sphere itself. Due to our usual visualisation of the sphere inside 3D space it’s tempting to imagine things passing through the 3D interior of the sphere, but this is explicitly forbidden when considering isotopies <em>on/in</em> the sphere. If one imagines the 2-sphere as the Earth, our isotopy takes place somewhere on the Earth’s crust and cannot pass through into the mantle or any deeper layers.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>One can also see this by realising that any circle on the sphere can be contracted to a single point. However, this violates a subtlety that I have said nothing about and will not: all of our Lagrangians should be <em>embedded</em> and a circle that is mapped to a point is not an embedding.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>In the literature this is a <em>Dehn twist</em>, and in higher dimensions a <em>generalised Dehn twist</em>; I’ll just say “twist” throughout. If you have some topology, here is the thing that makes the subject tick: the <em>square</em> of a Dehn twist is always smoothly isotopic to the identity map, so as far as rubber-sheet topology is concerned, twisting twice does nothing at all. Symplectic geometry, however, remembers. In the cotangent bundle of the 2-sphere no power of the twist is symplectically trivial, whereas the squared twist about the antidiagonal in <span class="math inline">\(S^2 \times S^2\)</span> <em>is</em>. Which of these two behaviours you get depends delicately on the ambient manifold, and sorting out which is which is a large part of what the subject is about.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>A confession for anyone who goes on to read the actual paper: symplectic geometers work with the <em>co</em>tangent bundle of the circle, written <span class="math inline">\(T^*S^1\)</span>, rather than the tangent bundle <span class="math inline">\(TS^1\)</span>, because the cotangent bundle carries a canonical symplectic form with no extra choices required. For our purposes here the distinction is invisible—once you pick a metric the two are isomorphic—and tangent lines are much easier to picture than covectors.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>This copy is called the <em>zero-section</em>, and it is the model for everything. A theorem of Weinstein says that every Lagrangian sphere, in every symplectic manifold, has a neighbourhood that looks exactly like a neighbourhood of the zero-section in <span class="math inline">\(T^*S^2\)</span>. So the local picture is always the same one, and all the interesting behaviour is about how those local pictures are glued together globally.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>For <span class="math inline">\(p=2\)</span> this is a familiar object in disguise: a disc with opposite points of its boundary glued together is the real projective plane, <span class="math inline">\(\mathbb{RP}^2\)</span>. Generally, pinwheels are not manifolds—there is no neighbourhood of the core circle which is homeomorphic to a subset of <span class="math inline">\(\mathbb{R}^2\)</span>—which is precisely why they’re interesting, and why <span class="math inline">\(B_{d,p,q}\)</span> isn’t just a plumbing of cotangent bundles.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>The constraints are that <span class="math inline">\(d, p, q\)</span> are positive integers with <span class="math inline">\(p &gt; q \ge 1\)</span> and <span class="math inline">\(p, q\)</span> coprime. Properly speaking, <span class="math inline">\(B_{d,p,q}\)</span> is the <em>Milnor fibre</em> of the cyclic quotient surface singularity <span class="math inline">\(\frac{1}{dp^2}(1, dpq-1)\)</span>: you take a space with a sharp singular point, and smooth it out; what you get is <span class="math inline">\(B_{d,p,q}\)</span>. The plumbing description above is a picture of the answer, not the definition.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>Twisting about a pinwheel is not something one can do just by analogy—a pinwheel isn’t a sphere—and constructing that symplectomorphism is a chunk of the work. It arises as the monodromy of the <span class="math inline">\(\frac{1}{p^2}(1, pq-1)\)</span> singularity.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
