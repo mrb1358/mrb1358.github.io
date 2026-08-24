@@ -16,7 +16,8 @@ research to prospective employers (and maybe even curious friends). Its
 purpose is to give the reader a sense of the main result of my thesis. Little
 attempt at mathematical rigour is made.
 
-***AI disclosure:*** Large parts of this post were drafted using generative AI.
+***AI disclosure:*** Large parts of this post were drafted by feeding rough
+handwritten notes into generative AI and lightly editing the output.
 
 # The main result
 
@@ -83,7 +84,7 @@ Finally, for two-dimensional manifolds (surfaces), an orientation is a
 ![Orienting a surface means choosing a sense of rotation at every point at
 once. Both the sphere and the doughnut are happy to
 oblige. Dashed lines/arrows are to be thought of as on the backside of the
-surface facing away from the reader.](/images/orientation-2d.png){width=80%
+surface facing away from the reader.](/images/orientation-2d.png){width=88%
 fig-alt="A sphere and a torus, redrawn with small circular arrows scattered
 over their surfaces, all curling the same way."}
 
@@ -261,7 +262,7 @@ L-one running vertically, crossing in the shaded middle."}
 Here's what is looks like if we glue the short edges of each piece of paper
 together:
 
-![The plumbing of two cylinders, a faithful picture. By Café Bene - Own work,
+![A faithful picture of the plumbing of two cylinders. By Café Bene - Own work,
 CC BY-SA 4.0,
 https://commons.wikimedia.org/w/index.php?curid=106106175](/images/Plumbing_disk_bundles.jpeg){width=50%
 fig-alt="Two paper rings glued together in a square patch. The
@@ -288,16 +289,14 @@ operation: cut the cylinder along $L_0$, hold one side fixed, rotate the other
 side through one full turn, and glue it back together. The curve $a$ gets
 dragged around with it, and comes out looking like this:
 
-::: {layout-ncol=2}
-![Before: the curve $a$ crosses $L_0$ once, going straight up.](/images/twistA.png){width=190
-fig-alt="A hand-drawn square with a horizontal blue line and a vertical curve
-labelled a crossing it."}
-
-![After: the same curve, now dragged once around the
-cylinder.](/images/twistB.png){width=210
-fig-alt="A hand-drawn square with a horizontal blue line and a curve labelled b
-that runs diagonally, entering at one side and leaving at the other."}
-:::
+![Cutting along $L$ and giving one side a full turn. On the left, the curve
+$a$ crosses $L$ once and carries straight on; on the right, the same curve
+after the twist, dragged once around the cylinder and relabelled
+$b$.](/images/twist-before-after.png){width=68%
+fig-alt="Two hand-drawn squares side by side, each with a horizontal blue line.
+In the left one a curve labelled a runs vertically across it; in the right one
+a curve labelled b runs diagonally, entering at one side and leaving at the
+other."}
 
 On the actual, rolled-up cylinder, that looks like the curve taking a
 detour---a spiral---before continuing on its way:
@@ -326,16 +325,13 @@ Returning to the plumbing, we can twist $L_1$ about $L_0$ and the result is a
 new Lagrangian sphere, one that now runs down one arm, wraps around the
 crossing, and heads off down the other:
 
-::: {layout-ncol=2}
-![$L_1$, twisted once about $L_0$.](/images/twist-plumb1.png){width=100%
-fig-alt="The cross-shaped plumbed surface with a blue curve that enters from
-one arm and leaves by a perpendicular arm, wrapping through the middle."}
-
-![And again. This can be iterated as often as you
-like.](/images/twist-plumb2.png){width=88%
-fig-alt="The same cross-shaped surface with a blue curve wrapping through the
-middle region twice before leaving."}
-:::
+![On the left, $L_1$ twisted once about $L_0$. On the right, twisted again ---
+and this can be iterated as often as you
+like.](/images/twist-plumb.png){width=80%
+fig-alt="Two drawings of the cross-shaped plumbed surface side by side. In the
+first a blue curve enters by one arm and leaves by a perpendicular arm,
+wrapping once through the middle; in the second it wraps through the middle
+twice before leaving."}
 
 And we can do it again. And again. Each twist produces a Lagrangian sphere that
 cannot be deformed into any of the previous ones, so:
@@ -357,7 +353,7 @@ Start with the circle $C$, all the points at distance $1$ from the origin in
 the plane:
 
 ![The circle $x^2 + y^2 = 1$ in the
-plane.](/images/circle-in-plane.png){width=26%
+plane.](/images/circle-in-plane.png){width=27%
 fig-alt="A circle drawn centred on a pair of coordinate axes."}
 
 A *tangent line* to $C$ at a point is the line through that point which makes a
@@ -365,7 +361,7 @@ right angle with the radius---the line the point would fly off along if you let
 go of it:
 
 ![A tangent line: at right angles to the
-radius.](/images/circle-tangent-line.png){width=42%
+radius.](/images/circle-tangent-line.png){width=32%
 fig-alt="A circle with a straight line touching it at one point, with a small
 square marking the right angle between the line and the radius."}
 
@@ -373,43 +369,46 @@ Now take that tangent line and rotate it out of the plane, so that instead of
 lying flat it sticks straight up:
 
 ![The same tangent line, stood up perpendicular to the
-plane.](/images/tangent-line-rotated.png){width=52%
-fig-alt="A flat plane containing a circle, with a straight line rising
-vertically out of the plane where it touches the circle."}
+plane.](/images/tangent-line-rotated.png){width=54%
+fig-alt="A flat plane containing a circle, with a dashed line showing the
+original tangent direction and a curved arrow rotating it up into a solid
+vertical line rising out of the plane where it touches the circle."}
 
 And here is the trick: do this at *every* point of the circle, all at once. The
 tangent lines sweep out a cylinder.
 
 ![All the tangent lines to the circle, taken together, form a cylinder. This is
-the tangent bundle $TS^1$.](/images/tangent-bundle-circle.png){width=54%
-fig-alt="A flat plane with a cylinder standing vertically through it, the
-cylinder passing through the circle in the plane."}
+the tangent bundle of the circle.](/images/tangent-bundle-circle.png){width=52%
+fig-alt="A flat plane with a cylinder standing vertically through it, ruled
+by vertical lines and meeting the plane exactly in the blue circle. The part of
+the cylinder below the plane is dashed."}
 
-This object---the collection of all the tangent lines to $S^1$---is called the
-**tangent bundle** of the circle, written $TS^1$.[^cotangent] It's the same
+This object---the collection of all the tangent lines to the circle---is
+called the **tangent bundle** of the circle.[^cotangent] It's the same
 cylinder we've been drawing all along, but now described in a way that makes no
 reference to rectangles or sheets of paper. And that matters, because this
 description doesn't care that we started with a circle.
 
 [^cotangent]: A confession for anyone who goes on to read the actual paper:
-    symplectic geometers work with the *co*tangent bundle $T^*S^1$, not the
-    tangent bundle, because the cotangent bundle carries a canonical symplectic
+    symplectic geometers work with the *co*tangent bundle of the circle,
+    written $T^*S^1$, rather than the tangent bundle $TS^1$, because the
+    cotangent bundle carries a canonical symplectic
     form with no extra choices required. For our purposes here the distinction
     is invisible---once you pick a metric the two are isomorphic---and tangent
     lines are much easier to picture than covectors.
 
 So let's not start with a circle. Let's start with the 2-sphere. At each point
-of $S^2$ there is now a tangent *plane* rather than a tangent line, and gluing
-all of them together gives the tangent bundle $TS^2$:
+of the sphere there is now a tangent *plane* rather than a tangent line, and
+gluing all of them together gives the tangent bundle of the 2-sphere:
 
 ![The tangent bundle of the 2-sphere: a tangent plane at every point of the
-sphere, all glued together.](/images/tangent-bundle-sphere.png){width=58%
-fig-alt="A sphere with flat planes touching it at several points, each with a
-small arrow, indicating the tangent plane at that point."}
+sphere, all glued together.](/images/tangent-bundle-sphere.png){width=50%
+fig-alt="A sphere with three flat planes each touching it at a single marked
+point, with a small arrow drawn in each plane from the point of contact."}
 
 Count the dimensions: two for moving around on the sphere, plus two more for
-choosing a tangent vector once you're there, makes **four**. So $TS^2$ is a
-4-dimensional symplectic manifold, and sitting inside it, as the collection of
+choosing a tangent vector once you're there, makes **four**. So the tangent
+bundle of the 2-sphere is a 4-dimensional symplectic manifold, and sitting inside it, as the collection of
 all the *zero-length* tangent vectors, is a copy of the 2-sphere itself: a
 Lagrangian 2-sphere.[^zerosection]
 
@@ -423,7 +422,8 @@ Lagrangian 2-sphere.[^zerosection]
 Here is the payoff. Both of our constructions---plumbing and twisting---were
 described in terms of tangent bundles, patches and cutting, and none of that
 cared about the dimension. Everything carries over verbatim. Plumb two copies
-of $TS^2$ together and you get two Lagrangian 2-spheres meeting at a point. Cut
+of the tangent bundle of the 2-sphere together and you get two Lagrangian
+2-spheres meeting at a point. Cut
 along one of them, give it a full turn, and glue back: a twist. Iterate:
 infinitely many Lagrangian spheres.
 
@@ -431,15 +431,22 @@ infinitely many Lagrangian spheres.
 
 Which finally brings us to the object in the title of my thesis.
 
-$B_{d,p,q}$ is built by plumbing together $d-1$ copies of $TS^2$ in a row---a
+$B_{d,p,q}$ is built by plumbing together $d-1$ copies of the tangent bundle
+of the 2-sphere in a row---a
 chain---and then plumbing on one further 4-dimensional piece, which is
 essentially the tangent bundle of a *circle with $p$ flanges*:
 
-![The extra ingredient: a circle with flanges attached. This is the object that
-makes $B_{d,p,q}$ more interesting than a plain chain of
-spheres.](/images/pinwheel.png){width=48%
-fig-alt="A hand-drawn sketch of a curved band with a flat panel attached along
-its length, forming a fin or flange."}
+![The extra ingredient: a circle carrying three flanges. Watch what happens to
+the flanges as you travel once around the circle---each one ends up in its
+neighbour's place. They are not three separate sheets at all, but one sheet
+wrapped round three times.](/images/pinwheel.png){width=54%
+fig-alt="A circle drawn in perspective, with three straight flanges sticking
+out of it at evenly spaced angles at a dozen points around it. The trio of
+flanges rotates gradually as it travels round the circle."}
+
+<!---
+TODO: Using Claude, generate an animation of the pinwheel flanges rotating
+-->
 
 That flanged object has a name---a **pinwheel**---and the recipe for it is
 charmingly simple: take a circle, take a disc, and glue the boundary of the
@@ -462,13 +469,13 @@ setting gives a different manifold.[^dpq]
     and smooth it out; what you get is $B_{d,p,q}$. The plumbing description
     above is a picture of the answer, not the definition.
 
-Inside $B_{d,p,q}$, that chain of plumbed cotangent bundles leaves behind a
+Inside $B_{d,p,q}$, that chain of plumbed tangent bundles leaves behind a
 chain of $d-1$ Lagrangian 2-spheres, each meeting the next at a single point:
 
 ![The chain of standard Lagrangian spheres inside
-$B_{d,p,q}$.](/images/sphere-chain.png){width=45%
-fig-alt="A row of overlapping circles, each touching the next, with a dashed
-gap in the middle indicating the chain continues."}
+$B_{d,p,q}$.](/images/sphere-chain.png){width=82%
+fig-alt="A row of spheres, each one touching the next at a single marked point,
+with a gap of three dots in the middle indicating that the chain continues."}
 
 These are the **standard** spheres---exactly the sense of "standard" I flagged
 up much earlier. They're the ones we can see, the ones that come for free with
