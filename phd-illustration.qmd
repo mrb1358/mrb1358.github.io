@@ -4,6 +4,7 @@ date: 2026-08-20
 aliases:
     - phd-illustration
 ---
+
 ![An almost toric base diagram for the $\mathbb{Q}$-Gorenstein smoothing of
 the cyclic quotient T-singularity
 $B_{d,p,q}$.](/images/bdpq-at-base-diagram.png)
@@ -14,6 +15,8 @@ This post is the product of when I was thinking about how to explain my PhD
 research to prospective employers (and maybe even curious friends). Its
 purpose is to give the reader a sense of the main result of my thesis. Little
 attempt at mathematical rigour is made.
+
+***AI disclosure:*** Large parts of this post were drafted using generative AI.
 
 # The main result
 
@@ -27,6 +30,12 @@ The plan is to explain this by way of analogy in the two dimensional setting
 that we can actually visualise (the $B_{d,p,q}$s mentioned above are
 4-dimensional spaces with the 2-dimensional Lagrangian sphere $L$ living
 inside it).
+
+Almost everything below is an exercise in *stepping down a dimension*: I will
+build up the whole story---Lagrangians, deformations, plumbing, twisting---in a
+world flat enough to draw on a page, and then, right at the end, we'll step
+back up and I'll claim that nothing important changes. That claim is a bit of a
+cheat, but it's a productive one.
 
 First of all:
 
@@ -46,26 +55,53 @@ zero.
 ## Orientation
 
 A zero-dimensional manifold is just a discrete collection of points (imagine
-the whole numbers dotted along the real number line, although this is an
+the whole numbers dotted along the real number line, although this is really an
 example of a zero-dimensional *submanifold* inside a one-dimensional ambient
 one). An orientation on a zero-dimensional manifold is just an assignment of a
-plus or minus sign at each point: **insert fig**
+plus or minus sign at each point:
+
+![Orienting a zero-dimensional manifold amounts to labelling each point with a
+sign.](/images/orientation-0d.png){width=90%
+fig-alt="A scatter of dots, with an arrow labelled 'assign orientation'
+pointing to the same scatter of dots, now each labelled with a plus or a minus
+sign."}
 
 Moving up to one-dimensional manifolds (curves), an orientation here is just a
-*consistent* choice of direction all throughout the manifold, *e.g.*: **insert
-fig** This gives a well-defined notion of left-hand and right-hand sides of
+*consistent* choice of direction all throughout the manifold, *e.g.*:
+
+![Orienting a curve means choosing a direction of travel, and sticking to
+it.](/images/orientation-1d.png){width=90%
+fig-alt="A straight line and a closed loop, each redrawn with small arrowheads
+along them all pointing the same way round."}
+
+This gives a well-defined notion of left-hand and right-hand sides of
 the curve, or in the case of the circle, an interior and exterior.
 
 Finally, for two-dimensional manifolds (surfaces), an orientation is a
-*consistent* choice of clockwise direction all throughout the manifold:
-**insert fig** An equivalent way of thinking about this is assigning an
+*consistent* choice of rotational direction all throughout the manifold:
+
+![Orienting a surface means choosing a sense of rotation at every point at
+once. Both the sphere and the doughnut are happy to
+oblige. Dashed lines/arrows are to be thought of as on the backside of the
+surface facing away from the reader.](/images/orientation-2d.png){width=80%
+fig-alt="A sphere and a torus, redrawn with small circular arrows scattered
+over their surfaces, all curling the same way."}
+
+An equivalent way of thinking about this is assigning an
 *outward pointing* normal vector to the surface, that is, a collection of
 arrows on the surface that are orthogonal to it and point in (whatever we
-decide to be) the outward direction, *e.g.*: **insert fig** This also yields a
-notion of interior and exterior of the surface.
+decide to be) the outward direction, *e.g.*:
+
+![The same information, packaged differently: an arrow sticking out of the
+surface at every point, all agreeing on which side is
+"out".](/images/sphere-outward-normal.png){width=38%
+fig-alt="A sphere with arrows attached at several points, each pointing
+directly away from the surface."}
+
+This also yields a notion of interior and exterior of the surface.
 
 You might wonder why this orientation business is necessary, and this is
-where I make another embarrassing concession and say, well, it's not entirely
+where I make an embarrassing concession and say, well, it's not entirely
 obvious in this dimension. To fully appreciate this we need to consider
 2-dimensional surfaces living inside 4-dimensional ambient manifolds, but this
 is too much of a digression for now, so we make the ersatz that Lagrangians are
@@ -86,9 +122,16 @@ built up by gluing M&ouml;bius strips together.
 # Lagrangian isotopies
 
 Now that we know what a Lagrangian is, we can easily draw some examples. Both
-the blue and black curves in the **following figure** are Lagrangians, the
+the blue and black curves in the following figure are Lagrangians, the
 crucial difference between them being that the blue one *joins up* into a
-loop---in maths we say this is a *closed* curve. In fact, since mathematicians
+loop---in maths we say this is a *closed* curve.
+
+![Two Lagrangians on the 2-sphere. The blue one closes up into a loop; the
+black one doesn't.](/images/lagrangian-example.png){width=34%
+fig-alt="A sphere with two curves drawn on its surface: a blue one forming a
+closed loop, and a black one with two loose ends."}
+
+In fact, since mathematicians
 like to refer to circles as *one-dimensional spheres*,[^spheredef] one can
 make the following (slightly overcomplicated but is designed to elucidate a
 point) statement: the blue curve is an example of a *1D Lagrangian
@@ -117,10 +160,25 @@ a choice and is used to highlight something we particularly care about.
 Now, let's discuss what *Lagrangian isotopic* means. Firstly,
 a Lagrangian *isotopy* is a smooth deformation of Lagrangian submanifolds.
 This is best explained by a picture:
-**insert fig** Given a Lagrangian isotopy $L_t$, we say that
+
+![Two Lagrangian isotopies. The curve $L_0$ is nudged, continuously, until it
+becomes $L_1$; the intermediate curves are drawn in
+blue.](/images/isotopy.png){width=85%
+fig-alt="Two families of nested closed curves, each interpolating between an
+outer curve labelled L-nought and an inner curve labelled L-one, with an arrow
+labelled t indicating the direction of the deformation."}
+
+Given a Lagrangian isotopy $L_t$, we say that
 $L_0$ and $L_1$ are Lagrangian *isotopic* to one another---that is, to be
 Lagrangian isotopic simply means *there exists a* Lagrangian isotopy between
 two Lagrangians.
+
+The little subscript $t$ is worth dwelling on for a second. Mathematicians like
+to use letters to label things (remember "solve for $x$" from school), and the
+letter $t$ here is one we can think of naively as *time*: at time $0$
+we have the curve $L_0$, at time $1$ we have $L_1$, and in between we have a
+whole continuous family of curves $L_t$ interpolating between them. It may be
+useful to think of an isotopy as a film playing as $t$ goes from $0$ to $1$.
 
 Let's think about Lagrangian isotopies of circles on the 2-sphere.^[It's
 important here to note that any isotopy must occur solely on the 2D sphere
@@ -144,3 +202,313 @@ the same manner as the theorem:
 > Lagrangian sphere, the equator.
 
 No twisting necessary!
+
+# A cylinder, from a sheet of paper
+
+That was a warm-up, and---I'll be honest---a slightly disappointing one. One
+class. Nothing to classify. So let's switch gears and find a more interesting
+place to live.
+
+Take a rectangular sheet of paper and roll it along its long edge until the two
+short edges meet. You get a cylinder:
+
+![Rolling a rectangle into a cylinder. The blue line becomes a blue circle
+running around the tube.](/images/cylinder-formation.png){width=90%
+fig-alt="A rectangle with a horizontal blue line, then the same rectangle
+partially curled, then a finished cylinder with the blue line now a circle
+around it."}
+
+This cylinder is our new 2-dimensional ambient manifold, and the blue circle is
+a Lagrangian sphere sitting inside it. Notice something important: on the
+sphere, our blue circle could be shrunk away to nothing, but here it cannot.
+It wraps the whole way around the tube. There's no way to slide it off.
+
+Here is a really useful observation, which we'll use for the rest of the
+post: **the flat rectangle is a perfectly faithful picture of the cylinder**,
+provided we remember the rule that the left edge is glued to the right edge.
+This is a wonderful bargain, because drawing 2D surfaces sitting in 3D space is
+hard (for me), whereas drawing rectangles is not. If you've ever played an old
+arcade game where walking off the right of the screen brings you back on the
+left, you already have the right instinct.
+
+# Plumbing: gluing two cylinders together
+
+Suppose we have *two* of these cylinders, which I'll call $C_0$ and $C_1$, each
+drawn as a rectangle, and each carrying its own Lagrangian circle---$L_0$ in
+$C_0$, and $L_1$ in $C_1$. There is an operation called **plumbing** that
+welds them into a single new manifold.
+
+The recipe: pick a small square patch in the middle of each rectangle, rotate
+the second one by a quarter turn, and then glue the two patches together so
+that the horizontal direction of one is identified with the vertical direction
+of the other.
+
+![Plumbing $C_0$ and $C_1$: a patch of one is glued to a patch of the other,
+with the two directions swapped over.](/images/plumbing-gluing.png){width=72%
+fig-alt="Two rectangles side by side, each with a shaded grid patch in the
+middle, and an arrow labelled 'glue' running from the patch in the first to the
+patch in the second."}
+
+What you end up with is a plus-sign-shaped object: two tubes crossing over each
+other at a single square of overlap. 
+
+![The plumbing of two cylinders. $L_0$ runs along one arm, $L_1$ along the
+other, and they meet exactly once.](/images/plumbing-gluing2.png){width=46%
+fig-alt="A cross or plus-shaped surface made from two crossing bands, with a
+black curve labelled L-nought running horizontally and a blue curve labelled
+L-one running vertically, crossing in the shaded middle."}
+
+Here's what is looks like if we glue the short edges of each piece of paper
+together:
+
+![The plumbing of two cylinders, a faithful picture. By Café Bene - Own work,
+CC BY-SA 4.0,
+https://commons.wikimedia.org/w/index.php?curid=106106175](/images/Plumbing_disk_bundles.jpeg){width=50%
+fig-alt="Two paper rings glued together in a square patch. The
+square has a cross section showing how the fibres of each ring is glued to the
+other."}
+
+Now here's the point. Both $L_0$ and $L_1$ live in this new manifold, and they
+cross each other at exactly one point. And---staring at the picture for a
+moment---we see that there is plainly no way to deform one into the other.
+$L_0$ goes around one arm; $L_1$ goes around the other; a continuous
+deformation can't decide to take the other exit. So we have at least *two*
+distinct classes of Lagrangian sphere. The classification here is non-trivial.
+Progress!
+
+# Twisting
+
+We can do better than "at least two", and this is where the real character of
+the subject shows up.
+
+Go back to a single cylinder, drawn flat as a rectangle. Draw the Lagrangian
+$L_0$ as the blue horizontal circle, and draw a second curve, $a$, running
+straight from the top edge to the bottom edge. Now perform the following
+operation: cut the cylinder along $L_0$, hold one side fixed, rotate the other
+side through one full turn, and glue it back together. The curve $a$ gets
+dragged around with it, and comes out looking like this:
+
+::: {layout-ncol=2}
+![Before: the curve $a$ crosses $L_0$ once, going straight up.](/images/twistA.png){width=190
+fig-alt="A hand-drawn square with a horizontal blue line and a vertical curve
+labelled a crossing it."}
+
+![After: the same curve, now dragged once around the
+cylinder.](/images/twistB.png){width=210
+fig-alt="A hand-drawn square with a horizontal blue line and a curve labelled b
+that runs diagonally, entering at one side and leaving at the other."}
+:::
+
+On the actual, rolled-up cylinder, that looks like the curve taking a
+detour---a spiral---before continuing on its way:
+
+![The twist, seen on the cylinder itself.](/images/twist-cyl.png){width=22%
+fig-alt="A cylinder with a blue circle around it and a curve that runs down the
+side, wrapping once around the tube where it meets the circle."}
+
+This operation is called a **twist**,[^dehn] and it is the star of the show. The
+crucial thing about it is that the twist is a genuine, honest symmetry of the
+cylinder---it doesn't tear anything, it doesn't change the shape---and yet it
+moves curves to genuinely new curves.
+
+[^dehn]: In the literature this is a *Dehn twist*, and in higher dimensions a
+    *generalised Dehn twist*; I'll just say "twist" throughout. If you have some
+    topology, here is the thing that makes the subject tick: the *square* of a
+    Dehn twist is always smoothly isotopic to the identity map, so as far as
+    rubber-sheet topology is concerned, twisting twice does nothing at all.
+    Symplectic geometry, however, remembers. In the cotangent bundle of the
+    2-sphere no power of the twist is symplectically trivial, whereas the
+    squared twist about the antidiagonal in $S^2 \times S^2$ *is*. Which of
+    these two behaviours you get depends delicately on the ambient manifold, and
+    sorting out which is which is a large part of what the subject is about.
+
+Returning to the plumbing, we can twist $L_1$ about $L_0$ and the result is a
+new Lagrangian sphere, one that now runs down one arm, wraps around the
+crossing, and heads off down the other:
+
+::: {layout-ncol=2}
+![$L_1$, twisted once about $L_0$.](/images/twist-plumb1.png){width=100%
+fig-alt="The cross-shaped plumbed surface with a blue curve that enters from
+one arm and leaves by a perpendicular arm, wrapping through the middle."}
+
+![And again. This can be iterated as often as you
+like.](/images/twist-plumb2.png){width=88%
+fig-alt="The same cross-shaped surface with a blue curve wrapping through the
+middle region twice before leaving."}
+:::
+
+And we can do it again. And again. Each twist produces a Lagrangian sphere that
+cannot be deformed into any of the previous ones, so:
+
+> There are infinitely many non-isotopic Lagrangian spheres in the plumbing.
+
+This is exactly what the words "up to twisting" are doing in my theorem. The
+classification isn't a short list. It's a short list *of starting points*,
+together with a set of moves you're allowed to apply to them.
+
+# Stepping back up a dimension
+
+Everything so far has been 1D curves inside 2D surfaces. My thesis is about 2D
+spheres inside 4D manifolds. To make the leap, I need one more idea---a
+different way of describing that cylinder, one that doesn't care what dimension
+it's in.
+
+Start with the circle $C$, all the points at distance $1$ from the origin in
+the plane:
+
+![The circle $x^2 + y^2 = 1$ in the
+plane.](/images/circle-in-plane.png){width=26%
+fig-alt="A circle drawn centred on a pair of coordinate axes."}
+
+A *tangent line* to $C$ at a point is the line through that point which makes a
+right angle with the radius---the line the point would fly off along if you let
+go of it:
+
+![A tangent line: at right angles to the
+radius.](/images/circle-tangent-line.png){width=42%
+fig-alt="A circle with a straight line touching it at one point, with a small
+square marking the right angle between the line and the radius."}
+
+Now take that tangent line and rotate it out of the plane, so that instead of
+lying flat it sticks straight up:
+
+![The same tangent line, stood up perpendicular to the
+plane.](/images/tangent-line-rotated.png){width=52%
+fig-alt="A flat plane containing a circle, with a straight line rising
+vertically out of the plane where it touches the circle."}
+
+And here is the trick: do this at *every* point of the circle, all at once. The
+tangent lines sweep out a cylinder.
+
+![All the tangent lines to the circle, taken together, form a cylinder. This is
+the tangent bundle $TS^1$.](/images/tangent-bundle-circle.png){width=54%
+fig-alt="A flat plane with a cylinder standing vertically through it, the
+cylinder passing through the circle in the plane."}
+
+This object---the collection of all the tangent lines to $S^1$---is called the
+**tangent bundle** of the circle, written $TS^1$.[^cotangent] It's the same
+cylinder we've been drawing all along, but now described in a way that makes no
+reference to rectangles or sheets of paper. And that matters, because this
+description doesn't care that we started with a circle.
+
+[^cotangent]: A confession for anyone who goes on to read the actual paper:
+    symplectic geometers work with the *co*tangent bundle $T^*S^1$, not the
+    tangent bundle, because the cotangent bundle carries a canonical symplectic
+    form with no extra choices required. For our purposes here the distinction
+    is invisible---once you pick a metric the two are isomorphic---and tangent
+    lines are much easier to picture than covectors.
+
+So let's not start with a circle. Let's start with the 2-sphere. At each point
+of $S^2$ there is now a tangent *plane* rather than a tangent line, and gluing
+all of them together gives the tangent bundle $TS^2$:
+
+![The tangent bundle of the 2-sphere: a tangent plane at every point of the
+sphere, all glued together.](/images/tangent-bundle-sphere.png){width=58%
+fig-alt="A sphere with flat planes touching it at several points, each with a
+small arrow, indicating the tangent plane at that point."}
+
+Count the dimensions: two for moving around on the sphere, plus two more for
+choosing a tangent vector once you're there, makes **four**. So $TS^2$ is a
+4-dimensional symplectic manifold, and sitting inside it, as the collection of
+all the *zero-length* tangent vectors, is a copy of the 2-sphere itself: a
+Lagrangian 2-sphere.[^zerosection]
+
+[^zerosection]: This copy is called the *zero-section*, and it is the model for
+    everything. A theorem of Weinstein says that every Lagrangian sphere, in
+    every symplectic manifold, has a neighbourhood that looks exactly like a
+    neighbourhood of the zero-section in $T^*S^2$. So the local picture is
+    always the same one, and all the interesting behaviour is about how those
+    local pictures are glued together globally.
+
+Here is the payoff. Both of our constructions---plumbing and twisting---were
+described in terms of tangent bundles, patches and cutting, and none of that
+cared about the dimension. Everything carries over verbatim. Plumb two copies
+of $TS^2$ together and you get two Lagrangian 2-spheres meeting at a point. Cut
+along one of them, give it a full turn, and glue back: a twist. Iterate:
+infinitely many Lagrangian spheres.
+
+# Meet $B_{d,p,q}$
+
+Which finally brings us to the object in the title of my thesis.
+
+$B_{d,p,q}$ is built by plumbing together $d-1$ copies of $TS^2$ in a row---a
+chain---and then plumbing on one further 4-dimensional piece, which is
+essentially the tangent bundle of a *circle with $p$ flanges*:
+
+![The extra ingredient: a circle with flanges attached. This is the object that
+makes $B_{d,p,q}$ more interesting than a plain chain of
+spheres.](/images/pinwheel.png){width=48%
+fig-alt="A hand-drawn sketch of a curved band with a flat panel attached along
+its length, forming a fin or flange."}
+
+That flanged object has a name---a **pinwheel**---and the recipe for it is
+charmingly simple: take a circle, take a disc, and glue the boundary of the
+disc onto the circle, but wrap it around $p$ times on the way.[^pinwheel] The
+number $q$ is bookkeeping that records how the wrapping twists as it goes.
+Between them, $d$, $p$ and $q$ are the three dials on the machine, and each
+setting gives a different manifold.[^dpq]
+
+[^pinwheel]: For $p=2$ this is a familiar object in disguise: a disc with
+    opposite points of its boundary glued together is the real projective
+    plane, $\mathbb{RP}^2$. Generally, pinwheels are not manifolds---there is
+    no neighbourhood of the core circle which is homeomorphic to a subset of
+    $\mathbb{R}^2$---which is precisely why they're interesting, and why
+    $B_{d,p,q}$ isn't just a plumbing of cotangent bundles.
+
+[^dpq]: The constraints are that $d, p, q$ are positive integers with
+    $p > q \ge 1$ and $p, q$ coprime. Properly speaking, $B_{d,p,q}$ is the
+    *Milnor fibre* of the cyclic quotient surface singularity
+    $\frac{1}{dp^2}(1, dpq-1)$: you take a space with a sharp singular point,
+    and smooth it out; what you get is $B_{d,p,q}$. The plumbing description
+    above is a picture of the answer, not the definition.
+
+Inside $B_{d,p,q}$, that chain of plumbed cotangent bundles leaves behind a
+chain of $d-1$ Lagrangian 2-spheres, each meeting the next at a single point:
+
+![The chain of standard Lagrangian spheres inside
+$B_{d,p,q}$.](/images/sphere-chain.png){width=45%
+fig-alt="A row of overlapping circles, each touching the next, with a dashed
+gap in the middle indicating the chain continues."}
+
+These are the **standard** spheres---exactly the sense of "standard" I flagged
+up much earlier. They're the ones we can see, the ones that come for free with
+the construction. And the question my thesis answers is: *are there any
+others?*
+
+The answer is that there are, of course, infinitely many others---we can twist,
+after all, and we saw where that leads. But the theorem says that twisting is
+the *only* thing going on:
+
+> Let $L \subset B_{d,p,q}$ be a Lagrangian sphere. Then $L$ is Lagrangian
+> isotopic, up to twisting, to one of the "standard" spheres.
+
+In other words: take any Lagrangian sphere in $B_{d,p,q}$, however exotic, and
+you can untwist it---by twisting about the standard spheres, and by twisting
+about the pinwheel[^pinwheeltwist]---until it lands on one of the $d-1$
+spheres in the chain. Nothing else is hiding in there. Every Lagrangian sphere
+in $B_{d,p,q}$ is a standard one that's been knotted up, and knotted up in a
+way that we can completely describe.
+
+[^pinwheeltwist]: Twisting about a pinwheel is not something one can do just by
+    analogy---a pinwheel isn't a sphere---and constructing that symplectomorphism
+    is a chunk of the work. It arises as the monodromy of the
+    $\frac{1}{p^2}(1, pq-1)$ singularity.
+
+A closing remark, in case you're wondering how much the dials matter: when
+$d = 1$ the chain is empty and there are no Lagrangian spheres in $B_{d,p,q}$
+*at all*. Just the pinwheel, sitting there on its own.
+
+# Coda
+
+And that picture at the very top of the page? That's how symplectic geometers
+actually draw $B_{d,p,q}$ in practice. It's a kind of shadow of the
+4-dimensional manifold cast down onto a flat piece of paper---the same trick as
+drawing the cylinder as a rectangle, taken a good deal further. The two crosses
+are where the Lagrangian spheres live, and the dotted line running down to the
+corner is where the pinwheel lives. The whole of this post is, in a sense, a
+long-winded caption for it.
+
+If you'd like the version with all the details---the $J$-holomorphic curves,
+the neck stretching, the Lefschetz fibrations, and the 90-odd pages I have
+skipped over---it's on the arXiv as
+[*Lagrangian spheres and cyclic quotient T-singularities*](https://arxiv.org/abs/2509.18976).
