@@ -40,6 +40,33 @@
     position: absolute; right: 22px; bottom: 22px;
     color: #ece7d8; font-size: 11.5px; opacity: 0.5; pointer-events: none;
   }
+  .mob-poster {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(16,16,16,0.32);
+    border: none; padding: 0; margin: 0;
+    font-family: inherit; color: #ece7d8; cursor: pointer;
+    transition: opacity 0.35s ease;
+    /* only the disc takes clicks, so the flat sheet can still be dragged */
+    pointer-events: none;
+  }
+  .mob-poster[hidden] { display: none; }
+  .mob-poster.is-leaving { opacity: 0; pointer-events: none; }
+  .mob-poster-disc {
+    width: 74px; height: 74px; border-radius: 50%;
+    background: #b23b2e;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+    transition: transform 0.15s ease;
+    pointer-events: auto;
+  }
+  .mob-poster-disc:hover { transform: scale(1.05); }
+  .mob-poster-disc:active { transform: scale(0.97); }
+  .mob-poster-disc svg { margin-left: 4px; }
+  .mob-poster:focus-visible { outline: 2px solid #ece7d8; outline-offset: -4px; }
+  @media (prefers-reduced-motion: reduce) {
+    .mob-poster, .mob-poster-disc { transition: none; }
+  }
 </style>
 
 <div class="mob-wrap" id="mobWrap">
@@ -47,9 +74,16 @@
   <div class="mob-caption">A4 strip &rarr; Möbius strip</div>
   <div class="mob-hint">drag to rotate</div>
   <div class="mob-controls">
-    <button class="mob-btn" id="btnReplay">Replay</button>
+    <button class="mob-btn" id="btnPlay">Play</button>
     <button class="mob-btn secondary" id="btnTrace" disabled>Trace the surface</button>
   </div>
+  <button class="mob-poster" id="mobPoster" aria-label="Play the animation">
+    <span class="mob-poster-disc">
+      <svg width="26" height="30" viewBox="0 0 26 30" aria-hidden="true">
+        <path d="M2 2 L24 15 L2 28 Z" fill="#fdf6ee"/>
+      </svg>
+    </span>
+  </button>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -314,12 +348,13 @@
   window.addEventListener("touchend", pointerUp);
 
   // ---------- UI wiring ----------
-  var btnReplay = document.getElementById("btnReplay");
+  var btnPlay = document.getElementById("btnPlay");
   var btnTrace = document.getElementById("btnTrace");
+  var poster = document.getElementById("mobPoster");
 
   var state = {
     t: 0,
-    playing: true,
+    playing: false,   // wait for the reader before the strip starts folding
     formationDone: false,
     boundaryReveal: 0,
     boundaryBuilt: false,
@@ -327,9 +362,24 @@
     traceT: 0
   };
 
-  function resetAnimation() {
+  // One button covers the whole lifecycle, so its label always names what the
+  // next click will do.
+  function syncPlayButton() {
+    if (state.formationDone) btnPlay.textContent = "Replay";
+    else if (state.playing) btnPlay.textContent = "Pause";
+    else if (state.t > 0) btnPlay.textContent = "Resume";
+    else btnPlay.textContent = "Play";
+  }
+
+  function hidePoster() {
+    if (poster.hidden || poster.classList.contains("is-leaving")) return;
+    poster.classList.add("is-leaving");
+    setTimeout(function () { poster.hidden = true; }, 350);
+  }
+
+  function resetAnimation(autoplay) {
     state.t = 0;
-    state.playing = true;
+    state.playing = !!autoplay;
     state.formationDone = false;
     state.boundaryReveal = 0;
     state.boundaryBuilt = false;
@@ -340,9 +390,22 @@
     traceMarker.visible = false;
     btnTrace.disabled = true;
     updateStrip(0);
+    syncPlayButton();
   }
 
-  btnReplay.addEventListener("click", resetAnimation);
+  function startOrToggle() {
+    hidePoster();
+    if (state.formationDone) {
+      resetAnimation(true);
+    } else {
+      state.playing = !state.playing;
+      syncPlayButton();
+    }
+  }
+
+  btnPlay.addEventListener("click", startOrToggle);
+  poster.addEventListener("click", startOrToggle);
+  syncPlayButton();
   btnTrace.addEventListener("click", function () {
     if (!state.formationDone) return;
     state.tracing = true;
@@ -383,6 +446,7 @@
         state.playing = false;
         state.formationDone = true;
         buildBoundaryPoints();
+        syncPlayButton();
       }
     }
 

@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-08-20">
+<meta name="dcterms.date" content="2026-08-24">
 
 <title>An Illustrative Guide To My PhD Thesis – Matthew Buck’s Homepage</title>
 <style>
@@ -37,6 +37,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href=".//images/calabi-yau.jpg" rel="icon" type="image/jpeg">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -183,7 +184,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 20, 2026</p>
+      <p class="date">August 24, 2026</p>
     </div>
   </div>
   
@@ -202,6 +203,9 @@ window.Quarto = {
 </figure>
 </div>
 <p><strong><em>Work in progress</em></strong></p>
+<!--
+TODO: write a section on motivations
+-->
 <p>This post is the product of when I was thinking about how to explain my PhD research to prospective employers (and maybe even curious friends). Its purpose is to give the reader a sense of the main result of my thesis. Little attempt at mathematical rigour is made.</p>
 <p><strong><em>AI disclosure:</em></strong> Large parts of this post were drafted by feeding rough handwritten notes into generative AI and lightly editing the output.</p>
 <section id="the-main-result" class="level1">
@@ -254,9 +258,13 @@ window.Quarto = {
 <section id="non-orientable-surfaces" class="level3">
 <h3 class="anchored" data-anchor-id="non-orientable-surfaces">Non-orientable surfaces</h3>
 <p>To see what non-orientability “looks like” check out this animation (courtesy of Claude) of the Möbius strip. Press the “Trace the surface” button to see how the strip <em>only has one side</em>. Non-orientable surfaces are essentially built up by gluing Möbius strips together.</p>
+<figure class="figure">
 <p align="center">
 <iframe src="./animations/mobius-formation.html" width="500" height="400">
 </iframe></p>
+<figcaption>Forming a Möbius strip from a strip of paper. Made with
+Claude.</figcaption>
+</figure>
 </section>
 </section>
 </section>
@@ -395,8 +403,8 @@ window.Quarto = {
 <figcaption>The tangent bundle of the 2-sphere: a tangent plane at every point of the sphere, all glued together.</figcaption>
 </figure>
 </div>
-<p>Count the dimensions: two for moving around on the sphere, plus two more for choosing a tangent vector once you’re there, makes <strong>four</strong>. So the tangent bundle of the 2-sphere is a 4-dimensional symplectic manifold, and sitting inside it, as the collection of all the <em>zero-length</em> tangent vectors, is a copy of the 2-sphere itself: a Lagrangian 2-sphere.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
-<p>Here is the payoff. Both of our constructions—plumbing and twisting—were described in terms of tangent bundles, patches and cutting, and none of that cared about the dimension. Everything carries over verbatim. Plumb two copies of the tangent bundle of the 2-sphere together and you get two Lagrangian 2-spheres meeting at a point. Cut along one of them, give it a full turn, and glue back: a twist. Iterate: infinitely many Lagrangian spheres.</p>
+<p>Counting the dimensions we see that the tangent bundle of the 2-sphere is 4D: two for moving around on the sphere, plus two more for choosing a tangent vector at each point. An analogy: suppose you’re flying a jet at cruising altitude<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> and you check in with air traffic control. You need to report your current position, heading <em>and</em> speed. The current position can be described using longitude and latitude coordinates, which correspond to the 2 dimensions of the 2-sphere. At that position, your heading is described using a compass (how many degrees from North you are facing) adding another dimension, and the aircraft’s speed contributes the final number, making 4 dimensions total.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> Now, what if instead you’re piloting a levitation device that is perfectly stationary (relative to the 2-sphere). Then your position in longitude and latitude coorindates still makes sense, but this time your speed is zero and your heading doesn’t really make sense. However, this still describes a perfectly valid point in the tangent bundle, and in fact, if we consider all positions on the 2-sphere simultaneously (and imagine that these correspond to a stationary levitation device) then we see that a copy of the 2-sphere lives inside the 4-dimensional tangent bundle—this is called the <em>zero-section</em>, since these points correspond to those with zero “speed”. Crucially, the zero section is actually a <em>Lagrangian</em> submanifold (according to the higher-dimensional definition we haven’t discussed here).<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
+<p>Here is the payoff. Both of our constructions—plumbing and twisting—were (secretly) described in terms of tangent bundles, patches and cutting, and none of that cared about the dimension. Everything carries over verbatim. Plumb two copies of the tangent bundle of the 2-sphere together and you get a 4D manifold containing two Lagrangian 2-spheres meeting at a point. Cut along one of them, give it a full turn, and glue back: a twist. Iterate: infinitely many non-isotopic Lagrangian spheres.</p>
 </section>
 <section id="meet-b_dpq" class="level1">
 <h1>Meet <span class="math inline">\(B_{d,p,q}\)</span></h1>
@@ -408,10 +416,17 @@ window.Quarto = {
 <figcaption>The extra ingredient: a circle carrying three flanges. Watch what happens to the flanges as you travel once around the circle—each one ends up in its neighbour’s place. They are not three separate sheets at all, but one sheet wrapped round three times.</figcaption>
 </figure>
 </div>
-<!---
-TODO: Using Claude, generate an animation of the pinwheel flanges rotating
--->
-<p>That flanged object has a name—a <strong>pinwheel</strong>—and the recipe for it is charmingly simple: take a circle, take a disc, and glue the boundary of the disc onto the circle, but wrap it around <span class="math inline">\(p\)</span> times on the way.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> The number <span class="math inline">\(q\)</span> is bookkeeping that records how the wrapping twists as it goes. Between them, <span class="math inline">\(d\)</span>, <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> are the three dials on the machine, and each setting gives a different manifold.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
+<figure alt="An animation showing a tripod traversing a circle three times. The
+tripod's arms rotate through 120 degrees for each full traversal of the
+circle. After 3 traversals of the circle, the tripod returns to its original
+position." class="figure">
+<p align="center">
+<iframe src="./animations/pinwheel-flanges.html" width="800" height="600">
+</iframe></p>
+<figcaption>An animation demonstrating how the flanges of a pinwheel twist
+around the core circle. Drag the figure to change the perspective.</figcaption>
+</figure>
+<p>That flanged object has a name—a <strong>pinwheel</strong>—and the recipe for it is charmingly simple: take a circle, take a disc, and glue the boundary of the disc onto the circle, but wrap it around <span class="math inline">\(p\)</span> times on the way.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> The number <span class="math inline">\(q\)</span> is bookkeeping that records how the wrapping twists as it goes. Between them, <span class="math inline">\(d\)</span>, <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> are the three dials on the machine, and each setting gives a different manifold.<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a></p>
 <p>Inside <span class="math inline">\(B_{d,p,q}\)</span>, that chain of plumbed tangent bundles leaves behind a chain of <span class="math inline">\(d-1\)</span> Lagrangian 2-spheres, each meeting the next at a single point:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -419,18 +434,18 @@ TODO: Using Claude, generate an animation of the pinwheel flanges rotating
 <figcaption>The chain of standard Lagrangian spheres inside <span class="math inline">\(B_{d,p,q}\)</span>.</figcaption>
 </figure>
 </div>
-<p>These are the <strong>standard</strong> spheres—exactly the sense of “standard” I flagged up much earlier. They’re the ones we can see, the ones that come for free with the construction. And the question my thesis answers is: <em>are there any others?</em></p>
+<p>These are the <strong>standard</strong> spheres—exactly the sense of “standard” we discussed earlier. They’re the ones we can see, the ones that come for free with the construction. And the question my thesis answers is: <em>are there any others?</em></p>
 <p>The answer is that there are, of course, infinitely many others—we can twist, after all, and we saw where that leads. But the theorem says that twisting is the <em>only</em> thing going on:</p>
 <blockquote class="blockquote">
 <p>Let <span class="math inline">\(L \subset B_{d,p,q}\)</span> be a Lagrangian sphere. Then <span class="math inline">\(L\)</span> is Lagrangian isotopic, up to twisting, to one of the “standard” spheres.</p>
 </blockquote>
-<p>In other words: take any Lagrangian sphere in <span class="math inline">\(B_{d,p,q}\)</span>, however exotic, and you can untwist it—by twisting about the standard spheres, and by twisting about the pinwheel<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>—until it lands on one of the <span class="math inline">\(d-1\)</span> spheres in the chain. Nothing else is hiding in there. Every Lagrangian sphere in <span class="math inline">\(B_{d,p,q}\)</span> is a standard one that’s been knotted up, and knotted up in a way that we can completely describe.</p>
+<p>In other words: take any Lagrangian sphere in <span class="math inline">\(B_{d,p,q}\)</span>, however exotic, and you can untwist it—by twisting about the standard spheres, and by twisting about the pinwheel<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a>—until it lands on one of the <span class="math inline">\(d-1\)</span> spheres in the chain. Nothing else is hiding in there. Every Lagrangian sphere in <span class="math inline">\(B_{d,p,q}\)</span> is a standard one that’s been knotted up, and knotted up in a way that we can completely describe.</p>
 <p>A closing remark, in case you’re wondering how much the dials matter: when <span class="math inline">\(d = 1\)</span> the chain is empty and there are no Lagrangian spheres in <span class="math inline">\(B_{d,p,q}\)</span> <em>at all</em>. Just the pinwheel, sitting there on its own.</p>
 </section>
 <section id="coda" class="level1">
 <h1>Coda</h1>
-<p>And that picture at the very top of the page? That’s how symplectic geometers actually draw <span class="math inline">\(B_{d,p,q}\)</span> in practice. It’s a kind of shadow of the 4-dimensional manifold cast down onto a flat piece of paper—the same trick as drawing the cylinder as a rectangle, taken a good deal further. The two crosses are where the Lagrangian spheres live, and the dotted line running down to the corner is where the pinwheel lives. The whole of this post is, in a sense, a long-winded caption for it.</p>
-<p>If you’d like the version with all the details—the <span class="math inline">\(J\)</span>-holomorphic curves, the neck stretching, the Lefschetz fibrations, and the 90-odd pages I have skipped over—it’s on the arXiv as <a href="https://arxiv.org/abs/2509.18976"><em>Lagrangian spheres and cyclic quotient T-singularities</em></a>.</p>
+<p>And that picture at the very top of the page? That’s one way that mathematicians draw <span class="math inline">\(B_{d,p,q}\)</span> in practice.<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a> It’s a kind of shadow of the 4-dimensional manifold cast down onto a flat piece of paper. A standard Lagrangian sphere casts a shadow that covers the dotted line connecting the two crosses, and the pinwheel casts a shadow over the dotted line connecting the leftmost cross with the corner of the wedge.</p>
+<p>If you’d like the version with all the details—the <span class="math inline">\(J\)</span>-holomorphic curves, the neck stretching, the Lefschetz fibrations, and the many other things I have skipped over—it’s on the arXiv as <a href="https://arxiv.org/abs/2509.18976"><em>Lagrangian spheres and cyclic quotient T-singularities</em></a>.</p>
 
 
 </section>
@@ -445,10 +460,13 @@ TODO: Using Claude, generate an animation of the pinwheel flanges rotating
 <li id="fn3"><p>One can also see this by realising that any circle on the sphere can be contracted to a single point. However, this violates a subtlety that I have said nothing about and will not: all of our Lagrangians should be <em>embedded</em> and a circle that is mapped to a point is not an embedding.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>In the literature this is a <em>Dehn twist</em>, and in higher dimensions a <em>generalised Dehn twist</em>; I’ll just say “twist” throughout. If you have some topology, here is the thing that makes the subject tick: the <em>square</em> of a Dehn twist is always smoothly isotopic to the identity map, so as far as rubber-sheet topology is concerned, twisting twice does nothing at all. Symplectic geometry, however, remembers. In the cotangent bundle of the 2-sphere no power of the twist is symplectically trivial, whereas the squared twist about the antidiagonal in <span class="math inline">\(S^2 \times S^2\)</span> <em>is</em>. Which of these two behaviours you get depends delicately on the ambient manifold, and sorting out which is which is a large part of what the subject is about.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>A confession for anyone who goes on to read the actual paper: symplectic geometers work with the <em>co</em>tangent bundle of the circle, written <span class="math inline">\(T^*S^1\)</span>, rather than the tangent bundle <span class="math inline">\(TS^1\)</span>, because the cotangent bundle carries a canonical symplectic form with no extra choices required. For our purposes here the distinction is invisible—once you pick a metric the two are isomorphic—and tangent lines are much easier to picture than covectors.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>This copy is called the <em>zero-section</em>, and it is the model for everything. A theorem of Weinstein says that every Lagrangian sphere, in every symplectic manifold, has a neighbourhood that looks exactly like a neighbourhood of the zero-section in <span class="math inline">\(T^*S^2\)</span>. So the local picture is always the same one, and all the interesting behaviour is about how those local pictures are glued together globally.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn7"><p>For <span class="math inline">\(p=2\)</span> this is a familiar object in disguise: a disc with opposite points of its boundary glued together is the real projective plane, <span class="math inline">\(\mathbb{RP}^2\)</span>. Generally, pinwheels are not manifolds—there is no neighbourhood of the core circle which is homeomorphic to a subset of <span class="math inline">\(\mathbb{R}^2\)</span>—which is precisely why they’re interesting, and why <span class="math inline">\(B_{d,p,q}\)</span> isn’t just a plumbing of cotangent bundles.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn8"><p>The constraints are that <span class="math inline">\(d, p, q\)</span> are positive integers with <span class="math inline">\(p &gt; q \ge 1\)</span> and <span class="math inline">\(p, q\)</span> coprime. Properly speaking, <span class="math inline">\(B_{d,p,q}\)</span> is the <em>Milnor fibre</em> of the cyclic quotient surface singularity <span class="math inline">\(\frac{1}{dp^2}(1, dpq-1)\)</span>: you take a space with a sharp singular point, and smooth it out; what you get is <span class="math inline">\(B_{d,p,q}\)</span>. The plumbing description above is a picture of the answer, not the definition.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn9"><p>Twisting about a pinwheel is not something one can do just by analogy—a pinwheel isn’t a sphere—and constructing that symplectomorphism is a chunk of the work. It arises as the monodromy of the <span class="math inline">\(\frac{1}{p^2}(1, pq-1)\)</span> singularity.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>And you’re an incredibly skilled pilot capable of maintaining an exact altitude, meaning your aircraft is always travelling at a perfect right angle to the radial vector pointing from Earth’s centre to your position.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>This is essentially a polar coordinate system for the tangent plane.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>The zero-section of a cotangent bundle is a <em>model</em> Lagrangian. A theorem of Weinstein says that every Lagrangian submanifold <span class="math inline">\(L\)</span>, in every symplectic manifold, has a neighbourhood that looks exactly like a neighbourhood of the zero-section in the cotangent bundle of <span class="math inline">\(L\)</span>. So the local picture is always the same one, and all the interesting behaviour is about how those local pictures are glued together globally.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>For <span class="math inline">\(p=2\)</span> this is a familiar object in disguise: a disc with opposite points of its boundary glued together is the real projective plane, <span class="math inline">\(\mathbb{RP}^2\)</span>. Generally, pinwheels are not manifolds—there is no neighbourhood of the core circle which is homeomorphic to a subset of <span class="math inline">\(\mathbb{R}^2\)</span>—which is precisely why they’re interesting, and why <span class="math inline">\(B_{d,p,q}\)</span> isn’t just a plumbing of cotangent bundles.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>The constraints are that <span class="math inline">\(d, p, q\)</span> are positive integers with <span class="math inline">\(p &gt; q \ge 1\)</span> and <span class="math inline">\(p, q\)</span> coprime. Properly speaking, <span class="math inline">\(B_{d,p,q}\)</span> is the <em>Milnor fibre</em> of the cyclic quotient surface singularity <span class="math inline">\(\frac{1}{dp^2}(1, dpq-1)\)</span>: you take a space with a sharp singular point, and smooth it out; what you get is <span class="math inline">\(B_{d,p,q}\)</span>. The plumbing description above is a picture of the answer, not the definition.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>Twisting about a pinwheel is not something one can do just by analogy—a pinwheel isn’t a sphere—and constructing that symplectomorphism is a chunk of the work. It arises as the monodromy of the <span class="math inline">\(\frac{1}{p^2}(1, pq-1)\)</span> singularity.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>Note that this particular drawing is for <span class="math inline">\((d,p,q) = (2,2,1)\)</span>.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
