@@ -1,0 +1,336 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --paper:#ffffff;
+    --ink:#1a1a1a;
+    --faint:#8b8b8b;
+    --rule:#e3e2de;
+    --core:#4a58c0;
+    --arm1:#c4384c;
+    --arm2:#16867b;
+    --arm3:#d08b12;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--paper);color:var(--ink)}
+  body{
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .sheet{max-width:760px;margin:0 auto;padding:34px 22px 56px}
+
+  .stage{position:relative}
+  #main{display:block;width:100%;height:auto;touch-action:none;cursor:grab}
+  #main.dragging{cursor:grabbing}
+  #inset{
+    position:absolute;top:0;right:0;width:132px;height:132px;
+  }
+  .insetcap{
+    position:absolute;top:134px;right:0;width:132px;
+    text-align:center;font-size:11.5px;color:var(--faint);line-height:1.35
+  }
+
+  .controls{
+    display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+    margin-top:16px;padding-top:14px;border-top:1px solid var(--rule);
+    font-size:14px;
+  }
+  button{
+    font:inherit;font-size:14px;color:var(--ink);background:none;
+    border:1px solid #cfcec9;border-radius:2px;
+    padding:5px 13px;cursor:pointer;
+  }
+  button:hover{background:#f4f3ef}
+  button:focus-visible,input:focus-visible{outline:2px solid var(--core);outline-offset:2px}
+  label.slider{display:flex;align-items:center;gap:8px;color:#4b4b4b}
+  input[type=range]{width:118px;accent-color:var(--core)}
+  label.check{display:flex;align-items:center;gap:6px;color:#4b4b4b}
+  input[type=checkbox]{accent-color:var(--core)}
+
+  @media (max-width:560px){
+    #inset{width:96px;height:96px}
+    .insetcap{top:98px;width:96px;font-size:10.5px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    /* animation starts paused; the reader drives it */
+  }
+</style>
+
+<div class="sheet">
+  <div class="stage">
+    <canvas id="main"></canvas>
+    <canvas id="inset"></canvas>
+  </div>
+
+  <div class="controls">
+    <button id="play">Play</button>
+    <button id="reset">Start over</button>
+    <label class="slider">Speed <input id="speed" type="range" min="10" max="180" value="60"></label>
+    <label class="check"><input id="trail" type="checkbox" checked> Leave a trail</label>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var P = 3, W = 0.60, TAU = Math.PI*2, FULL = 3*TAU;   // 3 traversals
+  var COL = ["#c4384c","#16867b","#d08b12"];
+  var CORE = "#4a58c0", INK = "#1a1a1a";
+
+  var main = document.getElementById("main"), ctx = main.getContext("2d");
+  var inset = document.getElementById("inset"), ictx = inset.getContext("2d");
+  var playBtn = document.getElementById("play"), resetBtn = document.getElementById("reset");
+  var speedEl = document.getElementById("speed"), trailEl = document.getElementById("trail");
+
+  var az = 30*Math.PI/180, el = 32*Math.PI/180;
+  var T = 0, playing = false, trail = [], view = null;
+  var CW = 0, CH = 0, DPR = 1;
+
+  // ---------------------------------------------------------------- geometry
+  function basis(az, el){
+    var v = [Math.cos(el)*Math.cos(az), Math.cos(el)*Math.sin(az), Math.sin(el)];
+    var r = [-Math.sin(az), Math.cos(az), 0];
+    var u = [v[1]*r[2]-v[2]*r[1], v[2]*r[0]-v[0]*r[2], v[0]*r[1]-v[1]*r[0]];
+    return {right:r, up:u, view:v};
+  }
+  function dot(a,b){ return a[0]*b[0]+a[1]*b[1]+a[2]*b[2]; }
+
+  // arms of the station at (unwrapped) core angle t
+  function arms(t){
+    var base = [Math.cos(t), Math.sin(t), 0];
+    var out = [];
+    for(var k=0;k<P;k++){
+      var phi = (t + TAU*k)/P;
+      var c = Math.cos(phi), s = Math.sin(phi);
+      out.push({k:k, a:base, b:[base[0]+W*c*base[0], base[1]+W*c*base[1], W*s], phi:phi});
+    }
+    return out;
+  }
+
+  // ------------------------------------------------------------- projection
+  function fit(){
+    var b = basis(az, el);
+    var minx=1e9,maxx=-1e9,miny=1e9,maxy=-1e9, i, k, pts=[], t;
+    for(i=0;i<=240;i++){ t = i/240*TAU; pts.push([Math.cos(t),Math.sin(t),0]); }
+    for(i=0;i<=240;i++){
+      var A = arms(i/240*FULL);
+      for(k=0;k<A.length;k++) pts.push(A[k].b);
+    }
+    for(i=0;i<pts.length;i++){
+      var x = dot(pts[i], b.right), y = dot(pts[i], b.up);
+      if(x<minx)minx=x; if(x>maxx)maxx=x; if(y<miny)miny=y; if(y>maxy)maxy=y;
+    }
+    var pad = 16;
+    var s = Math.min((CW-2*pad)/(maxx-minx), (CH-2*pad)/(maxy-miny));
+    view = {b:b, s:s, mx:(minx+maxx)/2, my:(miny+maxy)/2};
+  }
+  function px(p){ return CW/2 + view.s*(dot(p, view.b.right) - view.mx); }
+  function py(p){ return CH/2 - view.s*(dot(p, view.b.up)   - view.my); }
+  function depth(p){ return dot(p, view.b.view); }
+
+  function seg(a, b){ ctx.beginPath(); ctx.moveTo(px(a),py(a)); ctx.lineTo(px(b),py(b)); ctx.stroke(); }
+
+  // ------------------------------------------------------------------ paint
+  function coreCircle(){
+    var N = 400, v = view.b.view, hz = [v[0], v[1], 0], i, t, p;
+    var pts = [], near = [];
+    for(i=0;i<=N;i++){
+      t = i/N*TAU; p = [Math.cos(t), Math.sin(t), 0];
+      pts.push(p); near.push(dot(p, hz) > 0);
+    }
+    function run(want){
+      var open = false;
+      for(i=0;i<=N;i++){
+        if(near[i]===want){
+          if(!open){ ctx.beginPath(); ctx.moveTo(px(pts[i]),py(pts[i])); open = true; }
+          else ctx.lineTo(px(pts[i]),py(pts[i]));
+        } else if(open){ ctx.stroke(); open = false; }
+      }
+      if(open) ctx.stroke();
+    }
+    ctx.strokeStyle = CORE; ctx.lineCap = "round"; ctx.lineJoin = "round";
+    ctx.save();
+    ctx.globalAlpha = 0.5; ctx.lineWidth = 2.0; ctx.setLineDash([7,6]);
+    run(false);
+    ctx.restore();
+  }
+  function coreCircleNear(){
+    var N = 400, v = view.b.view, hz = [v[0], v[1], 0], i, t, p, pts=[], near=[];
+    for(i=0;i<=N;i++){
+      t = i/N*TAU; p = [Math.cos(t), Math.sin(t), 0];
+      pts.push(p); near.push(dot(p,hz) > 0);
+    }
+    ctx.strokeStyle = CORE; ctx.lineWidth = 3.0; ctx.setLineDash([]);
+    var open = false;
+    for(i=0;i<=N;i++){
+      if(near[i]){
+        if(!open){ ctx.beginPath(); ctx.moveTo(px(pts[i]),py(pts[i])); open = true; }
+        else ctx.lineTo(px(pts[i]),py(pts[i]));
+      } else if(open){ ctx.stroke(); open = false; }
+    }
+    if(open) ctx.stroke();
+  }
+
+  function startGhost(){               // where the trio stood at t = 0
+    var A = arms(0);
+    ctx.save();
+    ctx.strokeStyle = "#9a9a9a"; ctx.lineWidth = 1.6; ctx.setLineDash([4,4]);
+    ctx.globalAlpha = 0.9;
+    for(var k=0;k<A.length;k++) seg(A[k].a, A[k].b);
+    ctx.restore();
+  }
+
+  function drawTrail(){
+    if(!trailEl.checked || !trail.length) return;
+    ctx.save(); ctx.setLineDash([]); ctx.lineWidth = 1.6; ctx.lineCap = "round";
+    for(var i=0;i<trail.length;i++){
+      var A = trail[i];
+      for(var k=0;k<A.length;k++){
+        ctx.strokeStyle = COL[A[k].k];
+        ctx.globalAlpha = 0.20;
+        seg(A[k].a, A[k].b);
+      }
+    }
+    ctx.restore();
+  }
+
+  function drawStation(t){
+    var A = arms(t);
+    ctx.save(); ctx.setLineDash([]); ctx.lineCap = "round";
+    for(var k=0;k<A.length;k++){
+      ctx.strokeStyle = COL[A[k].k];
+      ctx.lineWidth = 3.4;
+      ctx.globalAlpha = 1;
+      seg(A[k].a, A[k].b);
+      ctx.fillStyle = COL[A[k].k];
+      ctx.beginPath(); ctx.arc(px(A[k].b), py(A[k].b), 3.4, 0, TAU); ctx.fill();
+    }
+    ctx.fillStyle = INK;
+    ctx.beginPath(); ctx.arc(px(A[0].a), py(A[0].a), 3.2, 0, TAU); ctx.fill();
+    ctx.restore();
+  }
+
+  function render(){
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    ctx.clearRect(0,0,CW,CH);
+    ctx.lineJoin = "round";
+
+    drawTrail();
+    coreCircle();                       // far arc, dashed
+    startGhost();
+
+    var frontOfCircle = depth([Math.cos(T), Math.sin(T), 0]) > 0;
+    if(!frontOfCircle) drawStation(T);
+    coreCircleNear();
+    if(frontOfCircle) drawStation(T);
+
+    drawInset();
+  }
+
+  // ------------------------------------------------------------------ inset
+  function drawInset(){
+    var w = inset.clientWidth, h = inset.clientHeight;
+    ictx.setTransform(DPR,0,0,DPR,0,0);
+    ictx.clearRect(0,0,w,h);
+    var cx = w/2, cy = h/2, R = Math.min(w,h)/2 - 13;
+
+    ictx.strokeStyle = "#dcdbd6"; ictx.lineWidth = 1; ictx.setLineDash([3,3]);
+    ictx.beginPath(); ictx.moveTo(cx-R,cy); ictx.lineTo(cx+R,cy); ictx.stroke();
+    ictx.beginPath(); ictx.moveTo(cx,cy-R); ictx.lineTo(cx,cy+R); ictx.stroke();
+    ictx.beginPath(); ictx.arc(cx,cy,R,0,TAU); ictx.stroke();
+
+    var A = arms(T), k, phi;
+      ictx.setLineDash([4,4]); ictx.lineWidth = 1.4;
+    for(k=0;k<P;k++){
+      phi = TAU*k/P;
+      ictx.strokeStyle = COL[k];
+      ictx.globalAlpha = 0.4;
+      ictx.beginPath(); ictx.moveTo(cx,cy);
+      ictx.lineTo(cx+R*Math.cos(phi), cy-R*Math.sin(phi)); ictx.stroke();
+    }
+    ictx.globalAlpha = 1.0;
+    ictx.setLineDash([]); ictx.lineCap = "round";
+    for(k=0;k<P;k++){
+      phi = A[k].phi;
+      ictx.strokeStyle = COL[k]; ictx.lineWidth = 3;
+      ictx.beginPath(); ictx.moveTo(cx,cy);
+      ictx.lineTo(cx+R*Math.cos(phi), cy-R*Math.sin(phi)); ictx.stroke();
+      ictx.fillStyle = COL[k];
+      ictx.beginPath(); ictx.arc(cx+R*Math.cos(phi), cy-R*Math.sin(phi), 3, 0, TAU); ictx.fill();
+    }
+    ictx.fillStyle = INK;
+    ictx.beginPath(); ictx.arc(cx,cy,2.6,0,TAU); ictx.fill();
+  }
+
+  // ------------------------------------------------------------------- loop
+  var last = 0, lastTrail = -1;
+  function frame(now){
+    if(playing){
+      if(!last) last = now;
+      var dt = Math.min(0.05, (now - last)/1000);
+      last = now;
+      T += dt * (speedEl.value/100) * 1.6;
+      var done = false;
+      if(T >= FULL){ T = FULL; done = true; }   // home again: hold here
+      if(done || lastTrail < 0 || Math.abs(T - lastTrail) > 0.07){
+        trail.push(arms(T)); lastTrail = T;
+        if(trail.length > 400) trail.shift();
+      }
+      render();
+      if(done) setPlaying(false);
+    } else { last = 0; }
+    requestAnimationFrame(frame);
+  }
+
+  // ---------------------------------------------------------------- sizing
+  function resize(){
+    DPR = Math.min(2, window.devicePixelRatio || 1);
+    var w = main.parentNode.clientWidth;
+    CW = w; CH = Math.max(300, Math.min(430, Math.round(w*0.62)));
+    main.style.height = CH + "px";
+    main.width = Math.round(CW*DPR); main.height = Math.round(CH*DPR);
+    inset.width = Math.round(inset.clientWidth*DPR);
+    inset.height = Math.round(inset.clientHeight*DPR);
+    fit(); render();
+  }
+  window.addEventListener("resize", resize);
+
+  // -------------------------------------------------------------- controls
+  function setPlaying(v){
+    playing = v; last = 0;
+    playBtn.textContent = v ? "Pause" : (T >= FULL ? "Play again" : "Play");
+  }
+  function rewind(){ T = 0; trail = []; lastTrail = -1; render(); }
+  playBtn.addEventListener("click", function(){
+    if(!playing && T >= FULL) rewind();       // finished, so start a fresh run
+    setPlaying(!playing);
+  });
+  resetBtn.addEventListener("click", function(){
+    rewind(); setPlaying(false);
+  });
+  trailEl.addEventListener("change", render);
+
+  // drag to turn the camera
+  var dragging = false, sx = 0, sy = 0, saz = 0, sel = 0;
+  main.addEventListener("pointerdown", function(e){
+    dragging = true; main.classList.add("dragging");
+    main.setPointerCapture(e.pointerId);
+    sx = e.clientX; sy = e.clientY; saz = az; sel = el;
+  });
+  main.addEventListener("pointermove", function(e){
+    if(!dragging) return;
+    az = saz - (e.clientX - sx)*0.008;
+    el = Math.max(6*Math.PI/180, Math.min(78*Math.PI/180, sel + (e.clientY - sy)*0.006));
+    fit(); render();
+  });
+  function endDrag(){ dragging = false; main.classList.remove("dragging"); }
+  main.addEventListener("pointerup", endDrag);
+  main.addEventListener("pointercancel", endDrag);
+
+  resize();
+  requestAnimationFrame(frame);
+  setPlaying(!window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+})();
+</script>
